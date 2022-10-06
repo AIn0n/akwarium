@@ -1,0 +1,5 @@
+run these commands:
+
+virtualenv venv
+source venv/bin/activate
+make req
