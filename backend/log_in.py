@@ -1,16 +1,21 @@
 from app import app
 from flask import make_response, request, redirect, url_for, abort
-from flask_login import LoginManager, login_user, UserMixin, login_required
+import flask_login as fl
 
-login_manager = LoginManager()
+
+# login part
+login_manager = fl.LoginManager()
 login_manager.init_app(app)
+logged_users = set()
+
+#user class
+class User(fl.UserMixin):
+    def __init__(self, name) -> None:
+        super().__init__()
+        id = name
+
+# TODO: remove!
 i = 0
-
-
-class User(UserMixin):
-    id = "123"
-
-
 @app.route("/hello", methods=["GET"])
 def hello():
     global i
@@ -30,12 +35,12 @@ def login():
     password = request.form["password"]
     user = User()
     if user_login(name, password):
-        login_user(user)
+        fl.login_user(user)
         return redirect(url_for("hello"))
     return abort(418)
 
 @app.route("/logout")
-@login_required
+@fl.login_required
 def logout():
     #logout_user()
     return redirect(url_for("login"))#TEMP
