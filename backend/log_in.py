@@ -39,6 +39,7 @@ def login():
     user = User(name)
     if verify_password(name, password):
         fl.login_user(user)
+        logged_users.add(user)
         return redirect(url_for("hello"))
     return abort(418)
 
