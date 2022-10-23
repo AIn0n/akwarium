@@ -1,8 +1,7 @@
 * Technologie:
     * backend - flask python
     * bazy danych - mongoDB
-    * frontend - svelte/vue
-        * do wyboru w trakcie projektu, ze względu na popularność i łatwość
+    * frontend - vue + bootstrap
     * możliwe że aplikacja zostanie zaprojektowana w architekturze mikroserwisów
     * sass do stylingu
     * REST API do komunikacji
