@@ -44,6 +44,18 @@ def login():
     return abort(418)
 
 
+@app.route("/register", methods=["POST"])
+def register():
+    email = request.form["email"]
+    name = request.form["name"]
+    password = request.form["password"]
+    user = User(name)
+    users_db.insert_one({"email": email, "name": name, "password": password})
+    fl.login_user(user)
+    logged_users.add(user)
+    return redirect(url_for("hello"))
+
+
 @app.route("/logout")
 @fl.login_required
 def logout():
