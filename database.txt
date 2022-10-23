@@ -1,0 +1,23 @@
+* Technologie:
+    * backend - flask python
+    * bazy danych - mongoDB
+    * frontend - svelte/vue
+        * do wyboru w trakcie projektu, ze względu na popularność i łatwość
+    * możliwe że aplikacja zostanie zaprojektowana w architekturze mikroserwisów
+    * sass do stylingu
+    * REST API do komunikacji
+
+* podział prac
+    * frontend - Adam Tadzik, Szymon Górka
+    * backend - Ewa, Daniel
+
+* prioritety modułów
+    * AquaLife
+    * AquaMaker
+    * AquaMonitor
+    * AquaHistory
+    * AquaAdmin
+    * AquaDecorator
+    * AquaAccount
+    * AquaView&Match&Share
+
