@@ -14,6 +14,7 @@ class User(fl.UserMixin):
         super().__init__()
         self.id = name
 
+
 @login_manager.user_loader
 def load_user(id):
     id = ObjectId(str(id))
@@ -21,16 +22,6 @@ def load_user(id):
         if user.id == id:
             return user
     return None
-
-# TODO: remove!
-i = 0
-
-
-@app.route("/hello", methods=["GET"])
-def hello():
-    global i
-    i += 1
-    return make_response({"hello": "", "counter": i}, 200)
 
 
 @app.route("/login", methods=["POST"])
@@ -42,7 +33,7 @@ def login():
         user = User(x["_id"])
         fl.login_user(user)
         logged_users.add(user)
-        return redirect(url_for("hello"))
+        return "Success", 200
     return abort(418)
 
 
@@ -51,27 +42,28 @@ def register():
     email = request.form["email"]
     name = request.form["name"]
     password = request.form["password"]
-    users_db.insert_one({"email": email, "name": name, "password": password, "aquarium":[]})
+    users_db.insert_one(
+        {"email": email, "name": name, "password": password, "aquarium": []}
+    )
     x = users_db.find_one({"name": name})
     user = User(x["_id"])
     fl.login_user(user)
     logged_users.add(user)
-    return redirect(url_for("hello"))
+    return "Success", 200
 
 
 @app.route("/logout")
 @fl.login_required
 def logout():
-    # logout_user()
-    return redirect(url_for("login"))  # TEMP
+    logged_users.remove(fl.current_user)
+    fl.logout_user()
+    return "Success", 200
 
 
 @app.route("/add_aquarium", methods=["POST", "GET"])
 @fl.login_required
 def add_aquarium():
     id = fl.current_user.id
-    print(id)
-    print(type(id))
     height = request.form["height"]
     width = request.form["width"]
     length = request.form["length"]
@@ -86,10 +78,9 @@ def add_aquarium():
         "heater_power": heater_power,
         "luminocity": luminocity,
         "pump_power": pump_power,
-        "filter": filter, 
+        "filter": filter,
     }
     users_db.find_one_and_update(
-        {'_id': ObjectId(str(id))},
-        {'$push': {"aquarium" : obj}}
+        {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
     )
-    return redirect(url_for("hello"))
+    return "Success", 200
