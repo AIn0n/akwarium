@@ -1,5 +1,5 @@
 from app import app, users_db
-from flask import make_response, request, redirect, url_for, abort
+from flask import request, abort
 import flask_login as fl
 from bson.objectid import ObjectId
 
@@ -57,30 +57,4 @@ def register():
 def logout():
     logged_users.remove(fl.current_user)
     fl.logout_user()
-    return "Success", 200
-
-
-@app.route("/add_aquarium", methods=["POST", "GET"])
-@fl.login_required
-def add_aquarium():
-    id = fl.current_user.id
-    height = request.form["height"]
-    width = request.form["width"]
-    length = request.form["length"]
-    heater_power = request.form["heater_power"]
-    luminocity = request.form["luminocity"]
-    pump_power = request.form["pump_power"]
-    filter = request.form["filter"]
-    obj = {
-        "height": height,
-        "width": width,
-        "length": length,
-        "heater_power": heater_power,
-        "luminocity": luminocity,
-        "pump_power": pump_power,
-        "filter": filter,
-    }
-    users_db.find_one_and_update(
-        {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
-    )
     return "Success", 200
