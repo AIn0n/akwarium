@@ -28,7 +28,7 @@ function login(event) {
         <input type="text" v-model="username" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="Login">
     </div>
     <div class="input-group input-group mb-3">
-        <input type="text" v-model="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="password">
+        <input type="password" v-model="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="password">
     </div>
     <div class="alert alert-danger" role="alert" v-if="show_error">
         {{error_message}}
