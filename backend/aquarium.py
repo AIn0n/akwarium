@@ -35,5 +35,4 @@ def add_aquarium():
 def aquarium():
     id = fl.current_user.id
     x = users_db.find_one({"_id": ObjectId(str(id))})
-
-    return x[aquarium]
+    return x["aquarium"]
