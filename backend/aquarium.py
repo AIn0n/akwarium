@@ -20,10 +20,12 @@ def add_aquarium():
         "height": height,
         "width": width,
         "length": length,
+        "image":"https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
         "heater_power": heater_power,
         "luminocity": luminocity,
         "pump_power": pump_power,
         "filter": filter,
+        "fish":[]
     }
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
