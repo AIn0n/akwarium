@@ -1,7 +1,8 @@
 from app import app, users_db
-from flask import request, abort
+from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
+import re #regex
 
 # login part
 login_manager = fl.LoginManager()
@@ -34,7 +35,7 @@ def login():
         fl.login_user(user)
         logged_users.add(user)
         return "Success", 200
-    return abort(418)
+    return jsonify({"message": "Incorrect password or login", "code": 418})
 
 
 @app.route("/register", methods=["POST"])
@@ -42,6 +43,14 @@ def register():
     email = request.form["email"]
     name = request.form["name"]
     password = request.form["password"]
+
+    if users_db.find_one({"name": name}):
+        return jsonify({"message": "This nickname is already in use", "code": 418})
+    if not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email):
+        return jsonify({"message": "This is not a proper email addess", "code": 418})
+    if users_db.find_one({"email": email}):
+        return jsonify({"message": "This email is already in use", "code": 418})
+
     users_db.insert_one(
         {"email": email, "name": name, "password": password, "aquarium": []}
     )
