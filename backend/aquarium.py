@@ -38,3 +38,8 @@ def aquarium():
     id = fl.current_user.id
     x = users_db.find_one({"_id": ObjectId(str(id))})
     return x["aquarium"]
+
+@app.route("/aquarium_simple", methods=["POST"])
+def aquarium_simple():
+    x = users_db.find_one({"nick": "john_doe"})
+    return x["aquarium"]
