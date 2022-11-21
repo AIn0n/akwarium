@@ -20,10 +20,12 @@ def add_aquarium():
         "height": height,
         "width": width,
         "length": length,
+        "image":"https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
         "heater_power": heater_power,
         "luminocity": luminocity,
         "pump_power": pump_power,
         "filter": filter,
+        "fish":[]
     }
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
@@ -35,4 +37,9 @@ def add_aquarium():
 def aquarium():
     id = fl.current_user.id
     x = users_db.find_one({"_id": ObjectId(str(id))})
+    return x["aquarium"]
+
+@app.route("/aquarium_simple", methods=["POST"])
+def aquarium_simple():
+    x = users_db.find_one({"nick": "john_doe"})
     return x["aquarium"]
