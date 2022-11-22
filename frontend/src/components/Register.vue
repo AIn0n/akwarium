@@ -17,6 +17,7 @@ function verify_password() {
 
 function register(event) {
     let config={
+        withCredentials: true,
         headers: {'Content-Type':'application/x-www-form-urlencoded'}
     }
     let result = axios.post("http://localhost:5000/register", {
