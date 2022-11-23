@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter, useRoute } from "vue-router";
 
+const router = useRouter();
+const route = useRoute();
 const username = ref('');
 const password = ref('');
 const error_message = ref('');
@@ -15,7 +18,7 @@ function login(event) {
     let result = axios.post("http://localhost:5000/login", {
         name: username.value,
         password: password.value
-    },config).then( res => { console.log(res)}).catch(e => { 
+    },config).then( res => {router.push("/Aquariums")}).catch(e => { 
         //TODO: make this error handling message better
         error_message.value = '' + e;
         show_error.value = true;
