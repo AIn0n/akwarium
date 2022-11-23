@@ -1,3 +1,15 @@
+<script setup>
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+const router = useRouter();
+
+function logout() {
+  let result = axios.post("http://localhost:5000/logout", null,{withCredentials: true})
+    .then( res => { router.push("/") });
+}
+</script>
+
 <template>
   <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
   <div class="container-fluid">
@@ -17,14 +29,14 @@
     </div>
   </div>
     <div class="collapse navbar-collapse me-auto" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Settings</a>
-            </li>
-            <li class="nav-item me-auto">
-                <a class="nav-link" href="#">Logout</a>
-            </li>
-        </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Settings</a>
+        </li>
+        <li class="nav-item me-auto">
+          <a class="nav-link" @click="logout">Logout</a>
+        </li>
+      </ul>
     </div>
 </nav>
 </template>
