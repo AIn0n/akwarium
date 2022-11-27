@@ -1,5 +1,13 @@
 <script setup>
-    import Navbar from '../components/Navbar.vue';
+import Navbar from '../components/Navbar.vue';
+import { onMounted } from 'vue';
+import instance from '../configs/axios_instance';
+
+onMounted(()=>{
+  let result = instance.get('/aquarium')
+    .then(res => { console.log(res.data)});
+});
+
 </script>
 
 <template>

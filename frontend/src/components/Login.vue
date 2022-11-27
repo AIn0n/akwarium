@@ -1,24 +1,19 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import instance from '../configs/axios_instance';
 import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
-const route = useRoute();
 const username = ref('');
 const password = ref('');
 const error_message = ref('');
 const show_error = ref(false);
 
 function login(event) {
-    let config={
-        withCredentials: true,
-        headers: {'Content-Type':'application/x-www-form-urlencoded'}
-    }
-    let result = axios.post("http://localhost:5000/login", {
+    let result = instance.post("/login", {
         name: username.value,
         password: password.value
-    },config).then( res => {router.push("/Aquariums")}).catch(e => { 
+    }).then( res => {router.push("/Aquariums")}).catch(e => { 
         //TODO: make this error handling message better
         error_message.value = '' + e;
         show_error.value = true;

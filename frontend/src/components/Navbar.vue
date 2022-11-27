@@ -1,12 +1,11 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import instance from '../configs/axios_instance';
 
 const router = useRouter();
 
 function logout() {
-  let result = axios.post("http://localhost:5000/logout", null,{withCredentials: true})
-    .then( res => { router.push("/") });
+  let result = instance.post("/logout").then( res => { router.push("/") });
 }
 </script>
 
