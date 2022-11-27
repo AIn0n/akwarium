@@ -2,14 +2,19 @@
 import Navbar from '../components/Navbar.vue';
 import { onBeforeMount, ref } from 'vue';
 import instance from '../configs/axios_instance';
+import { useRouter } from "vue-router";
 
-let aquariums = ref();
+const router = useRouter();
+const aquariums = ref();
 
 onBeforeMount(()=>{
   let result = instance.get('/aquarium')
     .then(res => { aquariums.value = res.data; });
 });
 
+function gotoCreator(event) {
+  router.push("/aquarium_creator");
+}
 </script>
 
 <template>
@@ -30,7 +35,7 @@ onBeforeMount(()=>{
       <div class="card-body">
         <h5 class="card-title">Create new aquarium</h5>
         <p class="card-text"></p>
-        <a href="#" class="btn btn-primary">+</a>
+        <a class="btn btn-primary" @click="gotoCreator">+</a>
       </div>
     </div>
 </div>
