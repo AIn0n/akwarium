@@ -41,8 +41,7 @@ def aquarium():
     x = users_db.find_one({"_id": ObjectId(str(id))})
     return x["aquarium"]
 
-
-@app.route("/aquarium_simple", methods=["POST"])
+@app.route("/aquarium_simple", methods=["GET"])
 def aquarium_simple():
-    x = users_db.find_one({"nick": "john_doe"})
+    x = users_db.find_one({"name": "john_doe"})
     return x["aquarium"]
