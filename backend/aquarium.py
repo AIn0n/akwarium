@@ -54,5 +54,4 @@ def device():
         for el in x:
             el['_id'] = str(el['_id'])
             res[type].append(el)
-    print(res)
     return jsonify(res)
