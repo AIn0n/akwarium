@@ -13,6 +13,7 @@ CORS_ORIGIN_WHITELIST = (
 app.config.from_file("config.json", load=json.load)
 mongo_client = pymongo.MongoClient(app.config["MONGO_API"])
 users_db = mongo_client["database"]["users"]
+device_db = mongo_client["database"]["device"]
 
 # rationale for that kind of imports:
 # https://stackoverflow.com/questions/11994325/how-to-divide-flask-app-into-multiple-py-files
