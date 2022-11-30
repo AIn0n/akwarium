@@ -7,6 +7,10 @@ const router = useRouter();
 function logout() {
   let result = instance.post("/logout").then( res => { router.push("/") });
 }
+
+function settings() {
+  router.push("/settings")
+}
 </script>
 
 <template>
@@ -30,7 +34,7 @@ function logout() {
     <div class="collapse navbar-collapse me-auto" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="#">Settings</a>
+          <a class="nav-link" @click="settings">Settings</a>
         </li>
         <li class="nav-item me-auto">
           <a class="nav-link" @click="logout">Logout</a>
