@@ -6,6 +6,7 @@ import flask_login as fl
 # login part
 logged_users = set()
 
+@fl.login_required
 @app.route("/add-fish", methods=["POST"])
 def add_fish():
     id = fl.current_user.id
@@ -22,7 +23,7 @@ def add_fish():
         "birth_date": birth_date,
         "status": "OK"
     }
-    
+
     x= users_db.find_one_and_update({
             "_id": ObjectId(str(id))
         }, {
