@@ -6,7 +6,6 @@ import flask_login as fl
 # login part
 logged_users = set()
 
-
 @app.route("/add-fish", methods=["POST"])
 def add_fish():
     id = fl.current_user.id
@@ -21,36 +20,28 @@ def add_fish():
         "name": name,
         "species": species,
         "birth_date": birth_date,
-        "status": "OK",
+        "status": "OK"
     }
-
-    users_db.find_one_and_update
-    (
-        {"_id": ObjectId(str(id)), "aquarium.name": aquarium_name},
-        {"$push": {"aquarium.$.fish": obj}},
+    
+    x= users_db.find_one_and_update({
+            "_id": ObjectId(str(id))
+        }, {
+            "$push": {"aquarium.$[a].fish": obj}
+        },
+        array_filters=[{"a.name" :  aquarium_name}]
     )
 
     print(obj)
 
     print(
-        users_db.find_one(
-            {"_id": ObjectId(str(id)), "aquarium.name": aquarium_name}
+        users_db.find_one
+        (
+            {
+                "_id": ObjectId(str(id)),
+                "aquarium.name": aquarium_name
+            }
         )
     )
-
+    
     return "Success", 200
 
-
-# @app.route("/fish", methods=["GET"])
-# def fish():
-#     id = fl.current_user.id
-#     aquarium_name = request.form["aquarium_name"]
-
-#     x =  users_db.find_one
-#     (
-#         {
-#             "_id": ObjectId(str(id)),
-#             "aquarium.name": aquarium_name
-#         }
-#     )
-#     return x
