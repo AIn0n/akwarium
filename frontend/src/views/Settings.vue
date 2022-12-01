@@ -3,8 +3,12 @@
 </script>
 
 <template>
-  <Navbar />  
-  <ul class="dropdown-menu" data-bs-toggle="dropdown">
-    <li><h6 class="dropdown-header">Dropdown header</h6></li>
-  </ul>
+  <Navbar />
+  <div class="d-grip">
+    <div class="card w-75 mx-auto my-3 text-bg-danger">
+      <div class="card-header">Change password</div>
+      <div class="card-body">
+      </div>
+    </div>
+  </div>
 </template>
