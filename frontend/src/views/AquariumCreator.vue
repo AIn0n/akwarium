@@ -13,8 +13,8 @@ function gotoMenu(event) {
 
 onBeforeMount(()=>{
   // TODO: not properly made yet
-  let result = instance.get('/aquarium')
-    .then(res => { console.log(res.data) });
+  let result = instance.get('/devices')
+    .then(res => { devices.value = res.data });
 });
 </script>
 
