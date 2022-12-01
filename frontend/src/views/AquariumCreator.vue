@@ -1,12 +1,21 @@
 <script setup>
 import { useRouter } from "vue-router";
+import { ref, onBeforeMount } from 'vue';
+import instance from "../configs/axios_instance";
 
 const router = useRouter();
+
+const devices = ref();
 
 function gotoMenu(event) {
   router.push("/Aquariums")
 }
 
+onBeforeMount(()=>{
+  // TODO: not properly made yet
+  let result = instance.get('/aquarium')
+    .then(res => { console.log(res.data) });
+});
 </script>
 
 <template>
@@ -16,7 +25,7 @@ function gotoMenu(event) {
       <input type="email" class="form-control" placeholder="name@example.com">
       <label for="floatingInput">Aquarium Name</label>
     </div>
-    <div class="row mt-3">
+    <div class="row my-3">
       <div class="input-group mb-3 col">
         <span class="input-group-text">Height</span>
         <input type="number" class="form-control">
@@ -30,25 +39,32 @@ function gotoMenu(event) {
         <input type="number" class="form-control">
       </div>
     </div>
-    <div class="form-floating col mb-3 w-25 mx-auto">
-      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
-      <label for="floatingSelect">pump</label>
+    <div class="row my-3">
+      <div class="form-floating col mx-auto">
+        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+          <option value="1">One</option>
+        </select>
+        <label for="floatingSelect">pump</label>
+      </div>
+      <div class="form-floating col mx-auto">
+        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+          <option value="1">One</option>
+        </select>
+        <label for="floatingSelect">pump</label>
+      </div>
+      <div class="form-floating col mx-auto">
+        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+          <option value="1">One</option>
+        </select>
+        <label for="floatingSelect">pump</label>
+      </div>
+      <div class="form-floating col mx-auto">
+        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+          <option value="1">One</option>
+        </select>
+        <label for="floatingSelect">pump</label>
+      </div>
     </div>
-    <div class="dropdown my-3">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Dropdown button
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
-  </div>
-
   </div>
   <div class="container text-center w-75">
     <div class="row">
