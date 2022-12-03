@@ -6,15 +6,19 @@ import instance from "../configs/axios_instance";
 const router = useRouter();
 
 const devices = ref();
+const selected = ref({});
 
 function gotoMenu(event) {
   router.push("/Aquariums")
 }
 
 onBeforeMount(()=>{
-  // TODO: not properly made yet
   let result = instance.get('/devices')
-    .then(res => { devices.value = res.data });
+    .then(res => { devices.value = res.data }).then((res)=>{
+      for (const device in devices.value) {
+        selected[device] = null;
+      }
+    });
 });
 </script>
 
@@ -40,29 +44,12 @@ onBeforeMount(()=>{
       </div>
     </div>
     <div class="row my-3">
-      <div class="form-floating col mx-auto">
-        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-          <option value="1">One</option>
-        </select>
-        <label for="floatingSelect">pump</label>
-      </div>
-      <div class="form-floating col mx-auto">
-        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-          <option value="1">One</option>
-        </select>
-        <label for="floatingSelect">pump</label>
-      </div>
-      <div class="form-floating col mx-auto">
-        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-          <option value="1">One</option>
-        </select>
-        <label for="floatingSelect">pump</label>
-      </div>
-      <div class="form-floating col mx-auto">
-        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-          <option value="1">One</option>
-        </select>
-        <label for="floatingSelect">pump</label>
+      <div v-for="(val, key) in devices" class="form-floating col mx-auto">
+          <select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="selected[key]">
+            <option v-for="item in val" :value="item">{{item.name}}</option>
+          </select>
+          <label for="floatingSelect">{{ key }}</label>
+          <p v-if="(selected[key] != null)"> {{selected[key].description}}</p>
       </div>
     </div>
   </div>
