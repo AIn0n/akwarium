@@ -7,6 +7,7 @@ const router = useRouter();
 
 const devices = ref();
 const selected = ref({});
+const error = ref("");
 
 function gotoMenu(event) {
   router.push("/Aquariums")
@@ -45,11 +46,18 @@ onBeforeMount(()=>{
     </div>
     <div class="row my-3">
       <div v-for="(val, key) in devices" class="form-floating col mx-auto">
-          <select class="form-select" id="floatingSelect" aria-label="Floating label select example" v-model="selected[key]">
-            <option v-for="item in val" :value="item">{{item.name}}</option>
-          </select>
           <label for="floatingSelect">{{ key }}</label>
-          <p v-if="(selected[key] != null)"> {{selected[key].description}}</p>
+          <div class="card"> 
+            <div class="card-body">
+              <select class="form-select mb-3" id="floatingSelect" aria-label="Floating label select example" v-model="selected[key]">
+                <option v-for="item in val" :value="item">{{item.name}}</option>
+              </select>
+              <div v-if="(selected[key] != null)">
+                <h5 class="card-title">power: {{selected[key].parameter}}</h5>
+                <p class="card-text">{{selected[key].description}}</p>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   </div>
