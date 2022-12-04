@@ -4,6 +4,7 @@ import LoginRegister from "../views/LoginRegister.vue";
 import AquariumCreator from "../views/AquariumCreator.vue";
 import Settings from "../views/Settings.vue";
 import AquaMonitor from '../views/AquaMonitor.vue';
+import AquaLife from '../views/AquaLife.vue';
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/aquaMonitor',
     name: 'aquaMonitor',
     component: AquaMonitor
+  },
+  {
+    path: '/aquaLife',
+    name: 'aquaLife',
+    component: AquaLife
   }
 ];
 
