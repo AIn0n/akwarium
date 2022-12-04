@@ -8,12 +8,10 @@ const router = useRouter();
 const devices = ref();
 const selected = ref({});
 const error = ref("");
-const name = ref("");
-const dims =  ref({
-  height: 0,
-  width: 0,
-  depth: 0
-});
+const aquarium_name = ref("");
+const width = ref(0);
+const height = ref(0);
+const depth = ref(0);
 
 function gotoMenu(event) {
   router.push("/Aquariums")
@@ -21,41 +19,53 @@ function gotoMenu(event) {
 
 onBeforeMount(()=>{
   let result = instance.get('/devices')
-    .then(res => { devices.value = res.data }).then((res)=>{
+    .then(res => { devices.value = res.data })
+    .then((res)=>{
       for (const device in devices.value) {
         selected[device] = null;
       }
-    });
+    })});
 
-function create_aquarium()
+function createAquarium(event)
 {
+    // TODO: wait for refactor and add all
   let result = instance.post('/add_aquarium', {
+    name: aquarium_name,
+    height: height,
+    width: width,
+    length: depth,
+    heated_id: selected['heater'],
+    lamp_id: selected['lamp'],
+    pump_id: selected['pump'],
+    filter_id: selected['filter'],
 
+  }).then((res)=>{
+    console.log(res);
+  }).catch((res)=>{
+    error.value = "cannot connect to the server, please try later";
   });
 }
-
-});
 </script>
 
 <template>
   <div class="container text-center">
     <h3 class="display-4 my-3">Create new aquarium</h3>
     <div class="form-floating w-50 mx-auto my-3">
-      <input type="email" class="form-control" placeholder="name" v-model="name">
+      <input type="email" class="form-control" placeholder="name" v-model="aquarium_name">
       <label for="floatingInput">Aquarium Name</label>
     </div>
     <div class="row my-3">
       <div class="input-group mb-3 col">
         <span class="input-group-text">Height</span>
-        <input type="number" class="form-control">
+        <input type="number" class="form-control" v-model="height">
       </div>
       <div class="input-group mb-3 col">
         <span class="input-group-text">Width</span>
-        <input type="number" class="form-control">
+        <input type="number" class="form-control" v-model="width">
       </div>
       <div class="input-group mb-3 col">
         <span class="input-group-text">Depth</span>
-        <input type="number" class="form-control">
+        <input type="number" class="form-control" v-model="depth">
       </div>
     </div>
     <div class="row my-3">
@@ -74,10 +84,13 @@ function create_aquarium()
           </div>
       </div>
     </div>
+    <div class="alert alert-danger" role="alert" v-if="(error.length > 0)">
+      {{error}}
+    </div>
   </div>
   <div class="container text-center w-75">
     <div class="row">
-      <button type="button" class="btn btn-primary col mx-3">
+      <button type="button" class="btn btn-primary col mx-3" @click="createAquarium">
         Create!
       </button>
       <button type="button" class="btn btn-secondary col mx-3" @click="gotoMenu">
