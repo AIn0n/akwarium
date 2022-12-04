@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import instance from '../configs/axios_instance';
 
 const username = ref('');
 const password = ref('');
@@ -9,22 +9,12 @@ const email = ref('');
 const error_message = ref('');
 const show_error = ref(false);
 
-function verify_password() {
-    if (password.value != rep_password.value) {
-
-    }
-}
-
 function register(event) {
-    let config={
-        withCredentials: true,
-        headers: {'Content-Type':'application/x-www-form-urlencoded'}
-    }
-    let result = axios.post("http://localhost:5000/register", {
+    let result = instance.post("/register", {
         name: username.value,
         password: password.value,
         email: email.value
-    },config).then( res => { console.log(res)}).catch(e => { 
+    }).then( res => { console.log(res)}).catch(e => { 
         //TODO: make this error handling message better
         error_message.value = '' + e;
         show_error.value = true;
@@ -39,7 +29,7 @@ function register(event) {
         base of fish lovers!
     </h6>
     <div class="form-floating mb-1">
-        <input type="text" class="form-control" id="floatingInput" placeholder="">
+        <input v-model="username" type="text" class="form-control" id="floatingInput" placeholder="">
         <label for="floatingInput">Username</label>
     </div>
     <div class="form-floating mb-1">
@@ -54,7 +44,7 @@ function register(event) {
         passwords must be the same!
     </div>
     <div class="form-floating mb-1">
-        <input type="email" class="form-control" id="floatingInput" placeholder="">
+        <input v-model="email" type="email" class="form-control" id="floatingInput" placeholder="">
         <label for="floatingInput">Email address</label>
     </div>
     <div class="alert alert-danger" role="alert" v-if="show_error">

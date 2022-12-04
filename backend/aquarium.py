@@ -1,5 +1,5 @@
-from app import app, users_db
-from flask import request
+from app import app, users_db, device_db
+from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
 
@@ -45,3 +45,16 @@ def aquarium():
 def aquarium_simple():
     x = users_db.find_one({"name": "john_doe"})
     return x["aquarium"]
+
+@app.route("/devices", methods = ['GET'])
+@fl.login_required
+def device():
+    types = ['filter', 'light', 'pump', 'heater']
+    res = {}
+    for type in types:
+        res[type]=[]
+        x = device_db.find({'type':type})
+        for el in x:
+            el['_id'] = str(el['_id'])
+            res[type].append(el)
+    return jsonify(res)

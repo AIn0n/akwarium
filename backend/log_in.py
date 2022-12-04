@@ -67,7 +67,7 @@ def register():
     return "Success", 200
 
 
-@app.route("/logout")
+@app.route("/logout", methods=["POST"])
 @fl.login_required
 def logout():
     logged_users.remove(fl.current_user)
