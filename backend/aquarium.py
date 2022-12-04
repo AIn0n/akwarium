@@ -44,7 +44,8 @@ def aquarium_simple():
     x = users_db.find_one({"nick": "john_doe"})
     return x["aquarium"]
 
-@app.route("/device", methods = ['GET'])
+@app.route("/devices", methods = ['GET'])
+@fl.login_required
 def device():
     types = ['filter', 'light', 'pump', 'heater']
     res = {}

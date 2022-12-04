@@ -8,9 +8,12 @@ function logout() {
   let result = instance.post("/logout").then( res => { router.push("/") });
 }
 
-function settings() {
-  router.push("/settings")
-}
+// why this function is even needed?
+// well, this string "/settings" makes some problems in vue
+// structure of bindings, so - don't try make it smaller again!
+function settings() { router.push("/settings") }
+
+function aquaLife() { router.push('/aquaLife')}
 </script>
 
 <template>
@@ -23,7 +26,7 @@ function settings() {
           <a class="nav-link" aria-current="page" href="#">aquaMonitor</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">aquaLife</a>
+          <a class="nav-link" @click="aquaLife">aquaLife</a>
         </li>
         <li class="nav-item me-auto">
           <a class="nav-link" href="#">aquaHistory</a>
