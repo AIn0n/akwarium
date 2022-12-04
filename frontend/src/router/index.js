@@ -3,6 +3,7 @@ import AquariumChooser from "../views/AquariumChooser.vue";
 import LoginRegister from "../views/LoginRegister.vue";
 import AquariumCreator from "../views/AquariumCreator.vue";
 import Settings from "../views/Settings.vue";
+import AquaMonitor from '../views/AquaMonitor.vue';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/settings',
     name: 'settings',
     component: Settings
+  },
+  {
+    path: '/aquaMonitor',
+    name: 'aquaMonitor',
+    component: AquaMonitor
   }
 ];
 
