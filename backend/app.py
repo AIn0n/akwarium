@@ -11,9 +11,11 @@ app.config.from_file("config.json", load=json.load)
 mongo_client = pymongo.MongoClient(app.config["MONGO_API"])
 users_db = mongo_client["database"]["users"]
 fish_db = mongo_client["database"]["fish"]
+species_db = mongo_client["database"]["species"]
 
 # rationale for that kind of imports:
 # https://stackoverflow.com/questions/11994325/how-to-divide-flask-app-into-multiple-py-files
 import log_in as log_in
 import aquarium as aquarium
 import add_fish as add_fish
+import species as species
