@@ -16,6 +16,7 @@ def add_aquarium():
     pump_id = request.form["pump_id"]
     filter_id = request.form["filter_id"]
 
+    print(height)
     if int(height)<=0:
         return jsonify({"message": "Height to small", "code": 418})
     if int(width)<=0:
