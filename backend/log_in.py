@@ -44,11 +44,11 @@ def register():
     name = request.form["name"]
     password = request.form["password"]
 
-    if users_db.find_one({"name": name}):
+    if users_db.find_one({"name": name}) != None:
         return jsonify({"message": "This nickname is already in use", "code": 418})
     if not re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email):
         return jsonify({"message": "This is not a proper email addess", "code": 418})
-    if users_db.find_one({"email": email}):
+    if users_db.find_one({"email": email}) != None:
         return jsonify({"message": "This email is already in use", "code": 418})
 
     users_db.insert_one(
