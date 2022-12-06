@@ -1,4 +1,4 @@
-from app import app, fish_db, users_db, species_db
+from app import app, users_db, species_db
 from flask import make_response, request, redirect, url_for, abort
 from bson.objectid import ObjectId
 import flask_login as fl
