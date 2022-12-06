@@ -2,7 +2,7 @@ from app import app, users_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
-import re #regex
+import re  # regex
 
 # login part
 login_manager = fl.LoginManager()

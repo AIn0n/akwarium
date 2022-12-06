@@ -3,6 +3,7 @@ from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
 
+
 @app.route("/add_aquarium", methods=["POST"])
 @fl.login_required
 def add_aquarium():
@@ -35,7 +36,7 @@ def add_aquarium():
         return jsonify({"message": "Value error", "code": 418})
 
     obj = {
-        "name":name,
+        "name": name,
         "height": height,
         "width": width,
         "length": length,
@@ -51,6 +52,7 @@ def add_aquarium():
     )
     return "Success", 200
 
+
 @app.route("/aquarium", methods=["GET"])
 @fl.login_required
 def aquarium():
@@ -58,7 +60,7 @@ def aquarium():
     x = users_db.find_one({"_id": ObjectId(str(id))})
     return x["aquarium"]
 
-@app.route("/aquarium_simple", methods=["POST"])
+@app.route("/aquarium_simple", methods=["GET"])
 def aquarium_simple():
     x = users_db.find_one({"name": "john_doe"})
     return x["aquarium"]
