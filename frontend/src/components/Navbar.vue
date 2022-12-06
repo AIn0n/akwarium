@@ -10,7 +10,6 @@ function logout() {
   let result = instance.post("/logout").then( res => { router.push("/") });
 }
 
-console.log(aquariumStore.isPicked);
 // why this function is even needed?
 // well, this string "/settings" makes some problems in vue
 // structure of bindings, so - don't try make it smaller again!

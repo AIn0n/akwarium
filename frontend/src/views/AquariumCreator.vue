@@ -30,7 +30,6 @@ onBeforeMount(()=>{
 
 function createAquarium(event)
 {
-  console.log(selected)
     // TODO: wait for refactor and add all
   let result = instance.post('/add_aquarium', {
     name: aquarium_name.value,
