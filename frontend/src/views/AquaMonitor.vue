@@ -1,6 +1,30 @@
 <script setup>
   import Navbar from '../components/Navbar.vue';
   import { useAquariumStore } from '../stores/aquarium';
+  
+  const water = {
+    KH: 10,
+    GH: 10,
+    NO3: 13,
+    NO2: 12,
+    PH: 6
+  };
+  const water_requirements = {
+    water_min: {
+      KH: 11,
+      GH: 10,
+      NO3: 10,
+      NO2: 6,
+      PH: 3,
+    },
+    water_max: {
+      KH: 20,
+      GH: 20,
+      NO3: 15,
+      NO2: 15,
+      PH: 9
+    }
+  }
 
   const aquariumStore = useAquariumStore();
 </script>
@@ -28,17 +52,11 @@
             </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>NO2</td>
-            <td>12</td>
-            <td>5</td>
-            <td>15</td>
-          </tr>
-          <tr>
-            <td>NO3</td>
-            <td>13</td>
-            <td>6</td>
-            <td>20</td>
+          <tr v-for="(val, key) in water">
+            <td>{{ key }}</td>
+            <td>{{ val }}</td>
+            <td>{{ water_requirements.water_min[key]}}</td>
+            <td>{{ water_requirements.water_max[key]}}</td>
           </tr>
         </tbody>
         </table>
