@@ -34,7 +34,13 @@
   <Navbar />
   <div class="row">    
     <div class="list-group list-group-flush col-3">
-      <a href="#" class="list-group-item list-group-item-action">fish1</a>
+      <a href="#" class="list-group-item list-group-item-action">
+        fish1
+          <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
+          99+
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      </a>
       <a href="#" class="list-group-item list-group-item-action">fish2</a>
       <a href="#" class="list-group-item list-group-item-action">fish3</a>
       <a class="list-group-item list-group-item-action disabled">fish4</a>
