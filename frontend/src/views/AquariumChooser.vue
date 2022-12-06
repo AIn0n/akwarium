@@ -3,14 +3,21 @@ import Navbar from '../components/Navbar.vue';
 import { onBeforeMount, ref } from 'vue';
 import instance from '../configs/axios_instance';
 import { useRouter } from "vue-router";
+import { useAquariumStore } from '../stores/aquarium';
 
 const router = useRouter();
 const aquariums = ref();
+const aquariumStore = useAquariumStore();
 
 onBeforeMount(()=>{
   let result = instance.get('/aquarium')
     .then(res => { aquariums.value = res.data; });
 });
+
+function pickAquarium(aquarium_name) {
+  aquariumStore.aquarium = aquarium_name;
+  router.push('/aquaMonitor');
+}
 
 function gotoCreator(event) {
   router.push("/aquarium_creator");
@@ -25,7 +32,7 @@ function gotoCreator(event) {
   <div class="card-body">
     <h5 class="card-title">{{aquarium.name}}</h5>
     <p class="card-text"></p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <a href="#" class="btn btn-primary" @click="pickAquarium(aquarium.name)">Go somewhere</a>
   </div>
 </div>
 <div class="card text-center w-50 mx-auto my-3">
