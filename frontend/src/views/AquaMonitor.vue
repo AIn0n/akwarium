@@ -1,6 +1,7 @@
 <script setup>
   import Navbar from '../components/Navbar.vue';
   import { useAquariumStore } from '../stores/aquarium';
+  import WaterTable from '../components/WaterTable.vue';
   
   const water = {
     KH: 10,
@@ -43,22 +44,7 @@
       <div class="row">
         <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">name</th>
-              <th scope="col">current</th>
-              <th scope="col">minimum</th>
-              <th scope="col">maximum</th>
-            </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(val, key) in water">
-            <td>{{ key }}</td>
-            <td>{{ val }}</td>
-            <td>{{ water_requirements.water_min[key]}}</td>
-            <td>{{ water_requirements.water_max[key]}}</td>
-          </tr>
-        </tbody>
+          <WaterTable :water="water" :requirements="water_requirements" />
         </table>
       </div>
       <div class="alert alert-warning my-3" role="alert">
