@@ -6,6 +6,7 @@ import flask_login as fl
 # login part
 logged_users = set()
 
+
 @fl.login_required
 @app.route("/add-fish", methods=["POST"])
 def add_fish():
@@ -17,9 +18,8 @@ def add_fish():
 
     aquarium_name = request.form["aquarium_name"]
 
-
-    species_names = [x['name'] for x in species_db.find({})]
-    if(species_names.count(species) != 1):
+    species_names = [x["name"] for x in species_db.find({})]
+    if species_names.count(species) != 1:
         return "Invalid species name", 419
 
     # todo: Replace species string with a species object
@@ -30,13 +30,10 @@ def add_fish():
         "status": "OK"
     }
 
-    users_db.find_one_and_update({
-            "_id": ObjectId(str(id))
-        }, {
-            "$push": {"aquarium.$[a].fish": obj}
-        },
-        array_filters=[{"a.name" :  aquarium_name}]
+    users_db.find_one_and_update(
+        {"_id": ObjectId(str(id))},
+        {"$push": {"aquarium.$[a].fish": obj}},
+        array_filters=[{"a.name": aquarium_name}],
     )
 
     return "Success", 200
-

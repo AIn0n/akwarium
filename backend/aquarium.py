@@ -17,11 +17,14 @@ def add_aquarium():
     pump_id = request.form["pump_id"]
     filter_id = request.form["filter_id"]
 
-    if int(height)<=0:
+    if users_db.find_one({"aquarium.name": name}) != None:
+        return jsonify({"message": "This name is already in use", "code": 418})
+
+    if int(height) <= 0:
         return jsonify({"message": "Height to small", "code": 418})
-    if int(width)<=0:
+    if int(width) <= 0:
         return jsonify({"message": "Width to small", "code": 418})
-    if int(length)<=0:
+    if int(length) <= 0:
         return jsonify({"message": "Length to small", "code": 418})
     try:
         if device_db.find_one({"_id": ObjectId(heater_id)}) == None:
@@ -40,12 +43,12 @@ def add_aquarium():
         "height": height,
         "width": width,
         "length": length,
-        "image":"https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
+        "image": "https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
         "heater_id": heater_id,
         "lamp_id": lamp_id,
         "pump_id": pump_id,
         "filter_id": filter_id,
-        "fish":[]
+        "fish": []
     }
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
@@ -53,27 +56,26 @@ def add_aquarium():
     return "Success", 200
 
 
-@app.route("/aquarium", methods=["GET"])
+@app.route("/aquariums-names", methods=["GET"])
 @fl.login_required
 def aquarium():
     id = fl.current_user.id
     x = users_db.find_one({"_id": ObjectId(str(id))})
-    return x["aquarium"]
+    ret = []
+    for aq in x["aquarium"]:
+        ret.append([aq["name"], aq["image"]])
+    return ret
 
-@app.route("/aquarium_simple", methods=["GET"])
-def aquarium_simple():
-    x = users_db.find_one({"name": "john_doe"})
-    return x["aquarium"]
 
-@app.route("/devices", methods = ['GET'])
+@app.route("/devices", methods=["GET"])
 @fl.login_required
 def device():
-    types = ['filter', 'light', 'pump', 'heater']
+    types = ["filter", "light", "pump", "heater"]
     res = {}
     for type in types:
-        res[type]=[]
-        x = device_db.find({'type':type})
+        res[type] = []
+        x = device_db.find({"type": type})
         for el in x:
-            el['_id'] = str(el['_id'])
+            el["_id"] = str(el["_id"])
             res[type].append(el)
     return jsonify(res)
