@@ -17,21 +17,29 @@ def add_aquarium():
     pump_id = request.form["pump_id"]
     filter_id = request.form["filter_id"]
 
-    if int(height)<=0:
+    if int(height) <= 0:
         return jsonify({"message": "Height to small", "code": 418})
-    if int(width)<=0:
+    if int(width) <= 0:
         return jsonify({"message": "Width to small", "code": 418})
-    if int(length)<=0:
+    if int(length) <= 0:
         return jsonify({"message": "Length to small", "code": 418})
     try:
         if device_db.find_one({"_id": ObjectId(heater_id)}) == None:
-            return jsonify({"message": "This id is incorrect (heater)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (heater)", "code": 418}
+            )
         if device_db.find_one({"_id": ObjectId(lamp_id)}) == None:
-            return jsonify({"message": "This id is incorrect (lamp)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (lamp)", "code": 418}
+            )
         if device_db.find_one({"_id": ObjectId(pump_id)}) == None:
-            return jsonify({"message": "This id is incorrect (pump)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (pump)", "code": 418}
+            )
         if device_db.find_one({"_id": ObjectId(filter_id)}) == None:
-            return jsonify({"message": "This id is incorrect (filter)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (filter)", "code": 418}
+            )
     except:
         return jsonify({"message": "Value error", "code": 418})
 
@@ -40,12 +48,12 @@ def add_aquarium():
         "height": height,
         "width": width,
         "length": length,
-        "image":"https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
+        "image": "https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
         "heater_id": heater_id,
         "lamp_id": lamp_id,
         "pump_id": pump_id,
         "filter_id": filter_id,
-        "fish":[]
+        "fish": [],
     }
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
@@ -60,20 +68,22 @@ def aquarium():
     x = users_db.find_one({"_id": ObjectId(str(id))})
     return x["aquarium"]
 
+
 @app.route("/aquarium_simple", methods=["GET"])
 def aquarium_simple():
     x = users_db.find_one({"name": "john_doe"})
     return x["aquarium"]
 
-@app.route("/devices", methods = ['GET'])
+
+@app.route("/devices", methods=["GET"])
 @fl.login_required
 def device():
-    types = ['filter', 'light', 'pump', 'heater']
+    types = ["filter", "light", "pump", "heater"]
     res = {}
     for type in types:
-        res[type]=[]
-        x = device_db.find({'type':type})
+        res[type] = []
+        x = device_db.find({"type": type})
         for el in x:
-            el['_id'] = str(el['_id'])
+            el["_id"] = str(el["_id"])
             res[type].append(el)
     return jsonify(res)
