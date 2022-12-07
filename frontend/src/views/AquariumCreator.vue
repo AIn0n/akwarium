@@ -42,8 +42,7 @@ function createAquarium(event)
     filter_id: selected.value['filter']._id,
 
   }).then((res)=>{
-    alertsStore.picker_alert = "successfully created aquarium";
-    alertsStore.picker_show = true;
+    alertsStore.set_success("Successfully created new aquarium <3")
     router.push('/Aquariums');
   }).catch((res)=>{
     error.value = "cannot connect to the server, please try later";

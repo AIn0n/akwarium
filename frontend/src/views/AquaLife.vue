@@ -1,15 +1,31 @@
 <script setup>
+import { onBeforeMount, ref } from 'vue';
 import Navbar from '../components/Navbar.vue';
+import instance from '../configs/axios_instance';
+import { useAlertsStore } from '../stores/alerts';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const alertsStore = useAlertsStore();
+const species = ref({});
+
+onBeforeMount(()=>{
+  const result = instance.get('/species-names')
+    .then((res)=>{ species.value = res.data; }).catch((res)=>{
+      alertsStore.set_danger("cannot connect to species database, try again later :(")
+      router.push("/Aquariums");
+    })
+});
+
 </script>
 
 <template>
   <Navbar />
   <div class="row">    
     <div class="list-group list-group-flush col-3">
-      <a href="#" class="list-group-item list-group-item-action">fish1</a>
-      <a href="#" class="list-group-item list-group-item-action">fish2</a>
-      <a href="#" class="list-group-item list-group-item-action">fish3</a>
-      <a class="list-group-item list-group-item-action disabled">fish4</a>
+      <a href="#" class="list-group-item list-group-item-action" v-for="specie in species">
+        {{specie}}
+      </a>
     </div>
     <div class="col container text-center  mx-3">
       <h3 class="display-6 my-3">hello again!</h3>
