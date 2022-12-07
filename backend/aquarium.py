@@ -66,6 +66,16 @@ def aquarium():
         ret.append([aq["name"], aq["image"]])
     return ret
 
+@app.route("/aquarium/<name>", methods=["GET"])
+@fl.login_required
+def aquarium_specific(name = None):
+    id = fl.current_user.id
+    x = users_db.find_one({"_id": ObjectId(str(id))})
+    
+    for aq in x["aquarium"]:
+        if aq['name'] == name:
+            return aq 
+    return jsonify({"message": "Incorrect name", "code": 418})
 
 @app.route("/devices", methods=["GET"])
 @fl.login_required
