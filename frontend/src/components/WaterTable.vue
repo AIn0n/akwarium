@@ -19,16 +19,16 @@ function check_water_row(key)
 <thead class="table-dark">
   <tr>
     <th scope="col">name</th>
-    <th scope="col">current</th>
     <th scope="col">minimum</th>
+    <th scope="col">current</th>
     <th scope="col">maximum</th>
   </tr>
 </thead>
 <tbody>
   <tr v-for="(val, key) in water" :class="check_water_row(key)">
     <td>{{ key }}</td>
-    <td>{{ val }}</td>
     <td>{{ water_requirements.water_min[key]}}</td>
+    <td>{{ val }}</td>
     <td>{{ water_requirements.water_max[key]}}</td>
   </tr>
 </tbody>
