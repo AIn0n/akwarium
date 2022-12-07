@@ -3,40 +3,56 @@ import Navbar from '../components/Navbar.vue';
 import { onBeforeMount, ref } from 'vue';
 import instance from '../configs/axios_instance';
 import { useRouter } from "vue-router";
+import { useAquariumStore } from '../stores/aquarium';
+import { useAlertsStore } from '../stores/alerts';
 
 const router = useRouter();
 const aquariums = ref();
+const aquariumStore = useAquariumStore();
+const alertsStore = useAlertsStore();
 
 onBeforeMount(()=>{
   let result = instance.get('/aquarium')
     .then(res => { aquariums.value = res.data; });
 });
 
+function pickAquarium(aquarium_name) {
+  aquariumStore.aquarium = aquarium_name;
+  router.push('/aquaMonitor');
+}
+
 function gotoCreator(event) {
   router.push("/aquarium_creator");
+}
+
+function close_alert(event)
+{
+  alertsStore.picker_show = false;
+  alertsStore.picker_alert = "";
 }
 </script>
 
 <template>
 <Navbar/>
-<div class="d-grid gap-5">
-  <!-- https://getbootstrap.com/docs/5.2/components/card/#grid-cards -->
-  <li v-for="aquarium in aquariums">
-    <div class="card text-center w-75 mx-auto">
-      <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">{{aquarium.name}}</h5>
-        <p class="card-text"></p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
-    </div>
-  </li>
-  <div class="card text-center w-75 mx-auto">
-      <div class="card-body">
-        <h5 class="card-title">Create new aquarium</h5>
-        <p class="card-text"></p>
-        <a class="btn btn-primary" @click="gotoCreator">+</a>
-      </div>
-    </div>
+<h3 class="display-6 my-3 text-center">hello again! Choose the aqaurium</h3>
+<div class="alert alert-success text-center mx-5 my-3" role="alert"
+  v-if="alertsStore.picker_show">
+  {{ alertsStore.picker_alert }}
+  <button type="button" class="btn-close" aria-label="Close" @click="close_alert"></button>
+</div>
+<div v-for="aquarium in aquariums" class="card text-center w-50 mx-auto my-3">
+  <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{aquarium.name}}</h5>
+    <p class="card-text"></p>
+    <a href="#" class="btn btn-primary" @click="pickAquarium(aquarium.name)">Go somewhere</a>
+  </div>
+</div>
+<div class="card text-center w-50 mx-auto my-3">
+  <div class="card-body">
+    <h5 class="card-title">Create new aquarium</h5>
+    <p class="card-text"></p>
+    <a class="btn btn-primary" @click="gotoCreator">+</a>
+  </div>
 </div>
 </template>

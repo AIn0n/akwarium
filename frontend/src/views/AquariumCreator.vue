@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import { ref, onBeforeMount } from 'vue';
 import instance from "../configs/axios_instance";
+import { useAlertsStore } from "../stores/alerts";
 
 const router = useRouter();
 
@@ -12,6 +13,7 @@ const aquarium_name = ref("");
 const width = ref(0);
 const height = ref(0);
 const depth = ref(0);
+const alertsStore = useAlertsStore();
 
 function gotoMenu(event) {
   router.push("/Aquariums")
@@ -28,7 +30,6 @@ onBeforeMount(()=>{
 
 function createAquarium(event)
 {
-  console.log(selected)
     // TODO: wait for refactor and add all
   let result = instance.post('/add_aquarium', {
     name: aquarium_name.value,
@@ -41,7 +42,9 @@ function createAquarium(event)
     filter_id: selected.value['filter']._id,
 
   }).then((res)=>{
-    console.log(res);
+    alertsStore.picker_alert = "successfully created aquarium";
+    alertsStore.picker_show = true;
+    router.push('/Aquariums');
   }).catch((res)=>{
     error.value = "cannot connect to the server, please try later";
   });
