@@ -1,33 +1,37 @@
 <script setup>
-  import Navbar from '../components/Navbar.vue';
-  import { useAquariumStore } from '../stores/aquarium';
-  import WaterTable from '../components/WaterTable.vue';
-  
-  const water = {
-    KH: 10,
-    GH: 10,
-    NO3: 13,
-    NO2: 12,
-    PH: 6
-  };
-  const water_requirements = {
-    water_min: {
-      KH: 11,
-      GH: 10,
-      NO3: 10,
-      NO2: 6,
-      PH: 3,
-    },
-    water_max: {
-      KH: 20,
-      GH: 20,
-      NO3: 15,
-      NO2: 15,
-      PH: 9
-    }
-  }
+import Navbar from '../components/Navbar.vue';
+import { useAquariumStore } from '../stores/aquarium';
+import WaterTable from '../components/WaterTable.vue';
+import { ref, onBeforeMount } from 'vue';
+import instance from '../configs/axios_instance';
 
-  const aquariumStore = useAquariumStore();
+const aquarium = ref({});
+
+const water = {
+  KH: 10,
+  GH: 10,
+  NO3: 13,
+  NO2: 12,
+  PH: 6
+};
+const water_requirements = {
+  water_min: {
+    KH: 11,
+    GH: 10,
+    NO3: 10,
+    NO2: 6,
+    PH: 3,
+  },
+  water_max: {
+    KH: 20,
+    GH: 20,
+    NO3: 15,
+    NO2: 15,
+    PH: 9
+  }
+}
+
+const aquariumStore = useAquariumStore();
 </script>
 
 <template>
