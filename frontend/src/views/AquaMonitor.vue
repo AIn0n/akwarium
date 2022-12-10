@@ -1,11 +1,27 @@
 <script setup>
 import Navbar from '../components/Navbar.vue';
 import { useAquariumStore } from '../stores/aquarium';
+import { useAlertsStore } from '../stores/alerts';
 import WaterTable from '../components/WaterTable.vue';
+import { useRouter } from 'vue-router';
 import { ref, onBeforeMount } from 'vue';
 import instance from '../configs/axios_instance';
 
+const aquariumStore = useAquariumStore();
+const alertStore = useAlertsStore();
+const router = useRouter();
 const aquarium = ref({});
+
+onBeforeMount(()=>{
+  const result = instance.get("aquarium/" + aquariumStore.aquarium)
+    .then((res)=>{
+      aquarium.value = res.data;
+      console.log(aquarium.value);
+    }).catch((e)=> {
+      alertStore.set_danger("cannot connect to the server");
+      router.push('/Aquariums');
+    });
+});
 
 const water = {
   KH: 10,
@@ -30,8 +46,6 @@ const water_requirements = {
     PH: 9
   }
 }
-
-const aquariumStore = useAquariumStore();
 </script>
 
 <template>

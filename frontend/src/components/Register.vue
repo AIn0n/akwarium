@@ -29,23 +29,23 @@ function register(event) {
         base of fish lovers!
     </h6>
     <div class="form-floating mb-1">
-        <input v-model="username" type="text" class="form-control" id="floatingInput" placeholder="">
-        <label for="floatingInput">Username</label>
+        <input v-model="username" type="text" class="form-control" id="nick" placeholder="a">
+        <label for="nick">Username</label>
     </div>
     <div class="form-floating mb-1">
-        <input v-model="password" type="password" class="form-control" id="floatingPassword" placeholder="">
-        <label for="floatingPassword">Password</label>
+        <input v-model="password" type="password" class="form-control" id="pass" placeholder="a">
+        <label for="pass">Password</label>
     </div>
     <div class="form-floating is-invalid mb-1">
-        <input v-model="rep_password" type="password" :class="{'form-control':true, 'is-invalid':password !== rep_password}" id="floatingInputGroup2" placeholder="Repeat password" required>
-        <label for="floatingInputGroup2">Repeat password</label>
+        <input v-model="rep_password" type="password" :class="{'form-control':true, 'is-invalid':password !== rep_password}" id="pass2" placeholder="Repeat password" required>
+        <label for="pass2">Repeat password</label>
     </div>
     <div class="invalid-feedback" v-show="password !== rep_password">
         passwords must be the same!
     </div>
     <div class="form-floating mb-1">
-        <input v-model="email" type="email" class="form-control" id="floatingInput" placeholder="">
-        <label for="floatingInput">Email address</label>
+        <input v-model="email" type="email" class="form-control" id="mail" placeholder="a">
+        <label for="mail">Email address</label>
     </div>
     <div class="alert alert-danger" role="alert" v-if="show_error">
         {{error_message}}
