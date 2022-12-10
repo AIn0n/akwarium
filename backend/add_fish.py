@@ -35,24 +35,27 @@ def add_fish():
 
     return "Success", 200
 
+@fl.login_required
 @app.route("/delete-fish", methods=["DELETE"])
 def delete_fish():
     id = fl.current_user.id
     name = request.form["name"]
     aquarium_name = request.form["aquarium_name"]
     
+
     # Doesn't seem to delete for some reason
     result = users_db.find_one_and_update(
         {"_id": ObjectId(str(id))},
         {"$pull": {
-            "aquarium": {
-                "name": aquarium_name,
-                "fish": {
-                    "name": name
-                }
+            "aquarium.$[a].fish": {
+                "name": name
             }
-        }}
-        )
+        }},
+        array_filters=[{"a.name": aquarium_name}]
+    )
+
+    print(f"The collections are ")
+    users_db.list_indexes()
 
     # print(f"The result is {result}")
 

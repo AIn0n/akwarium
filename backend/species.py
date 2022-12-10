@@ -53,26 +53,26 @@ def add_species():
 
 
 ### DOESN'T SEEM TO WORK PROPERLY
-# @app.route("/add-incompatibilities", methods=["POST"])
-# def add_incompatibilities():
-#     # Necessary forms
-#     subject_name = request.form["subject_name"]
-#     aggressor_name = request.form["aggressor_name"]
+@app.route("/add-incompatibilities", methods=["POST"])
+def add_incompatibilities():
+    # Necessary forms
+    subject_name = request.form["subject_name"]
+    aggressor_name = request.form["aggressor_name"]
 
-#     # Query validation
-#     species_names = get_species_names()
-#     if species_names.count(subject_name) != 1:
-#         return "Invalid aggression subject name", 419
-#     if species_names.count(aggressor_name) != 1:
-#         return "Invalid aggressor name", 419
+    # Query validation
+    species_names = get_species_names()
+    if species_names.count(subject_name) != 1:
+        return "Invalid aggression subject name", 419
+    if species_names.count(aggressor_name) != 1:
+        return "Invalid aggressor name", 419
 
-#     # incompatibility insertion
-#     users_db.find_one_and_update(
-#         {"name": subject_name},
-#         {"$push": {"incompatibilities": aggressor_name}},
-#     )
+    # incompatibility insertion
+    users_db.find_one_and_update(
+        {"name": subject_name},
+        {"$push": {"incompatibilities": aggressor_name}},
+    )
 
-#     return "Success", 200
+    return "Success", 200
 
 
 @app.route("/species-names", methods=["GET"])
