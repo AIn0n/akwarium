@@ -1,10 +1,7 @@
 from app import app, users_db, species_db
-from flask import make_response, request, redirect, url_for, abort
+from flask import request
 from bson.objectid import ObjectId
 import flask_login as fl
-
-# login part
-logged_users = set()
 
 
 @fl.login_required
@@ -35,5 +32,28 @@ def add_fish():
         {"$push": {"aquarium.$[a].fish": obj}},
         array_filters=[{"a.name": aquarium_name}],
     )
+
+    return "Success", 200
+
+@app.route("/delete-fish", methods=["DELETE"])
+def delete_fish():
+    id = fl.current_user.id
+    name = request.form["name"]
+    aquarium_name = request.form["aquarium_name"]
+    
+    # Doesn't seem to delete for some reason
+    result = users_db.find_one_and_update(
+        {"_id": ObjectId(str(id))},
+        {"$pull": {
+            "aquarium": {
+                "name": aquarium_name,
+                "fish": {
+                    "name": name
+                }
+            }
+        }}
+        )
+
+    # print(f"The result is {result}")
 
     return "Success", 200
