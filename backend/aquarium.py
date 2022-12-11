@@ -1,10 +1,10 @@
-from app import app, users_db, device_db
+from app import app, users_db, device_db, logs_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
 
 
-@app.route("/add_aquarium", methods=["POST"])
+@app.route("/add-aquarium", methods=["POST"])
 @fl.login_required
 def add_aquarium():
     id = fl.current_user.id
@@ -16,6 +16,11 @@ def add_aquarium():
     lamp_id = request.form["lamp_id"]
     pump_id = request.form["pump_id"]
     filter_id = request.form["filter_id"]
+
+    x = users_db.find_one({"_id": id})['aquarium']
+    for el in x:
+        if el['name'] == name:
+            return jsonify({"message": "This name is already in use", "code": 418})
 
     if int(height) <= 0:
         return jsonify({"message": "Height to small", "code": 418})
@@ -53,27 +58,38 @@ def add_aquarium():
         "lamp_id": lamp_id,
         "pump_id": pump_id,
         "filter_id": filter_id,
-        "fish": [],
+        "fish": []
     }
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
     )
+    x = users_db.find_one({"_id": ObjectId(str(id))})['logs_id']
+    logs_db.find_one_and_update(
+        {"_id": x}, {"$push": {name: []}}
+    )
     return "Success", 200
 
 
-@app.route("/aquarium", methods=["GET"])
+@app.route("/aquariums-names", methods=["GET"])
 @fl.login_required
-def aquarium():
+def aquarium_names():
     id = fl.current_user.id
     x = users_db.find_one({"_id": ObjectId(str(id))})
-    return x["aquarium"]
+    ret = []
+    for aq in x["aquarium"]:
+        ret.append({"name":aq["name"], "image":aq["image"]})
+    return ret
 
-
-@app.route("/aquarium_simple", methods=["GET"])
-def aquarium_simple():
-    x = users_db.find_one({"name": "john_doe"})
-    return x["aquarium"]
-
+@app.route("/aquarium/<name>", methods=["GET"])
+@fl.login_required
+def aquarium_specific(name = None):
+    id = fl.current_user.id
+    x = users_db.find_one({"_id": ObjectId(str(id))})
+    
+    for aq in x["aquarium"]:
+        if aq['name'] == name:
+            return aq 
+    return jsonify({"message": "Incorrect name", "code": 418})
 
 @app.route("/devices", methods=["GET"])
 @fl.login_required

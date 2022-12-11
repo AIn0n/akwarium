@@ -4,10 +4,13 @@ from flask import request
 # login part
 logged_users = set()
 
+
 @app.route("/add-species", methods=["POST"])
 def add_species():
     # Necessary forms
     name = request.form["name"]
+    water_requirements = request.form["water_requirements"]
+    required_size: float = request.form["required_size"]
 
     min_KH = request.form["min_KH"]
     min_GH = request.form["min_GH"]
@@ -48,7 +51,6 @@ def add_species():
         "incompatibilities": [],
         }
     )
-
     return "Success", 200
 
 
@@ -84,7 +86,6 @@ def get_species_names():
 def get_species_incompatibilities():
     name = request.form["name"]
     return species_db.find_one({"name": name})["incompatibilities"]
-
 
 @app.route("/delete-species", methods=["DELETE"])
 def delete_species():

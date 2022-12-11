@@ -1,4 +1,4 @@
-from app import app, users_db
+from app import app, users_db, logs_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
@@ -45,22 +45,17 @@ def register():
     password = request.form["password"]
 
     if users_db.find_one({"name": name}) != None:
-        return jsonify(
-            {"message": "This nickname is already in use", "code": 418}
-        )
-    if not re.fullmatch(
-        r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", email
-    ):
-        return jsonify(
-            {"message": "This is not a proper email addess", "code": 418}
-        )
+        return jsonify({"message": "This nickname is already in use", "code": 418})
+    if not re.fullmatch(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", email):
+        return jsonify({"message": "This is not a proper email addess", "code": 418})
     if users_db.find_one({"email": email}) != None:
         return jsonify({"message": "This email is already in use", "code": 418})
 
     users_db.insert_one(
-        {"email": email, "name": name, "password": password, "aquarium": []}
+        {"email": email, "name": name, "password": password, "aquarium": [], "logs_id":ObjectId()}
     )
     x = users_db.find_one({"name": name})
+    logs_db.insert_one({'_id':x['logs_id']})
     user = User(x["_id"])
     fl.login_user(user)
     logged_users.add(user)

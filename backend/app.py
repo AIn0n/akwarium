@@ -9,6 +9,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (("http://localhost:5173", "http://localhost:5000"),)
 app.config.from_file("config.json", load=json.load)
 mongo_client = pymongo.MongoClient(app.config["MONGO_API"])
+logs_db = mongo_client["database"]["logs"]
 users_db = mongo_client["database"]["users"]
 device_db = mongo_client["database"]["device"]
 species_db = mongo_client["database"]["species"]
