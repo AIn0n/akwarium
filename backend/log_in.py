@@ -1,4 +1,4 @@
-from app import app, users_db
+from app import app, users_db, logs_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
@@ -52,9 +52,10 @@ def register():
         return jsonify({"message": "This email is already in use", "code": 418})
 
     users_db.insert_one(
-        {"email": email, "name": name, "password": password, "aquarium": []}
+        {"email": email, "name": name, "password": password, "aquarium": [], "logs_id":ObjectId()}
     )
     x = users_db.find_one({"name": name})
+    logs_db.insert_one({'_id':x['logs_id']})
     user = User(x["_id"])
     fl.login_user(user)
     logged_users.add(user)
