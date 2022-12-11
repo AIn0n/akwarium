@@ -12,8 +12,10 @@ const aquariumStore = useAquariumStore();
 const alertsStore = useAlertsStore();
 
 onBeforeMount(()=>{
-  let result = instance.get('/aquarium')
-    .then(res => { aquariums.value = res.data; });
+  let result = instance.get('/aquariums-names')
+    .then(res => {
+      aquariums.value = res.data; 
+    }).catch((e)=> { alertsStore.set_danger("cannot connect to the server, try later")});
 });
 
 function pickAquarium(aquarium_name) {
@@ -37,15 +39,13 @@ function gotoCreator(event) {
 <div v-for="aquarium in aquariums" class="card text-center w-50 mx-auto my-3">
   <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="card-img-top" alt="...">
   <div class="card-body">
-    <h5 class="card-title">{{aquarium.name}}</h5>
-    <p class="card-text"></p>
-    <a href="#" class="btn btn-primary" @click="pickAquarium(aquarium.name)">Go somewhere</a>
+    <h5 class="card-title">{{aquarium[0]}}</h5>
+    <a href="#" class="btn btn-primary" @click="pickAquarium(aquarium[0])">check aquarium!</a>
   </div>
 </div>
 <div class="card text-center w-50 mx-auto my-3">
   <div class="card-body">
     <h5 class="card-title">Create new aquarium</h5>
-    <p class="card-text"></p>
     <a class="btn btn-primary" @click="gotoCreator">+</a>
   </div>
 </div>
