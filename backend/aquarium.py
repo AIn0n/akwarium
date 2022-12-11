@@ -30,13 +30,21 @@ def add_aquarium():
         return jsonify({"message": "Length to small", "code": 418})
     try:
         if device_db.find_one({"_id": ObjectId(heater_id)}) == None:
-            return jsonify({"message": "This id is incorrect (heater)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (heater)", "code": 418}
+            )
         if device_db.find_one({"_id": ObjectId(lamp_id)}) == None:
-            return jsonify({"message": "This id is incorrect (lamp)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (lamp)", "code": 418}
+            )
         if device_db.find_one({"_id": ObjectId(pump_id)}) == None:
-            return jsonify({"message": "This id is incorrect (pump)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (pump)", "code": 418}
+            )
         if device_db.find_one({"_id": ObjectId(filter_id)}) == None:
-            return jsonify({"message": "This id is incorrect (filter)", "code": 418})
+            return jsonify(
+                {"message": "This id is incorrect (filter)", "code": 418}
+            )
     except:
         return jsonify({"message": "Value error", "code": 418})
 
