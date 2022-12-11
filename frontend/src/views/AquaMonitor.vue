@@ -52,16 +52,13 @@ const water_requirements = {
   <Navbar />
   <div class="row">    
     <div class="list-group list-group-flush col-3">
-      <a href="#" class="list-group-item list-group-item-action">
-        fish1
+      <a href="#" class="list-group-item list-group-item-action" v-for="fish in aquarium.value.fish">
+        {{fish.name}}
           <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
-          99+
-          <span class="visually-hidden">unread messages</span>
+          {{fish.problems.length}}
+          <span class="visually-hidden">problems</span>
         </span>
       </a>
-      <a href="#" class="list-group-item list-group-item-action">fish2</a>
-      <a href="#" class="list-group-item list-group-item-action">fish3</a>
-      <a class="list-group-item list-group-item-action disabled">fish4</a>
     </div>
     <div class="col container text-center mx-3">
       <h3 class="display-6 my-3">{{ aquariumStore.aquarium }}</h3>
@@ -71,19 +68,11 @@ const water_requirements = {
           <WaterTable :water="water" :requirements="water_requirements" />
         </table>
       </div>
-      <div class="alert alert-warning my-3" role="alert">
-        A simple info alert—check it out!
-      </div>
-      <div class="alert alert-danger my-3" role="alert">
-        A simple info alert—check it out!
-      </div>
+      <div class="alert alert-warning my-3" role="alert">A simple info alert—check it out!</div>
+      <div class="alert alert-danger my-3" role="alert">A simple info alert—check it out!</div>
       <div class="container text-center row">
-        <button type="button" class="btn btn-outline-dark col mx-3">
-          Save logs
-        </button>
-        <button type="button" class="btn btn-outline-dark col mx-3">
-          Back to menu
-        </button>
+        <button type="button" class="btn btn-outline-dark col mx-3">Save logs</button>
+        <button type="button" class="btn btn-outline-dark col mx-3">Back to menu</button>
       </div>
     </div>
   </div>

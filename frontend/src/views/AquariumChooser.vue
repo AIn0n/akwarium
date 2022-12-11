@@ -39,8 +39,8 @@ function gotoCreator(event) {
 <div v-for="aquarium in aquariums" class="card text-center w-50 mx-auto my-3">
   <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="card-img-top" alt="...">
   <div class="card-body">
-    <h5 class="card-title">{{aquarium[0]}}</h5>
-    <a href="#" class="btn btn-primary" @click="pickAquarium(aquarium[0])">check aquarium!</a>
+    <h5 class="card-title">{{aquarium['name']}}</h5>
+    <a href="#" class="btn btn-primary" @click="pickAquarium(aquarium['name'])">check aquarium!</a>
   </div>
 </div>
 <div class="card text-center w-50 mx-auto my-3">

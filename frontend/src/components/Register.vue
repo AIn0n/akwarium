@@ -47,10 +47,6 @@ function register(event) {
         <input v-model="email" type="email" class="form-control" id="mail" placeholder="a">
         <label for="mail">Email address</label>
     </div>
-    <div class="alert alert-danger" role="alert" v-if="show_error">
-        {{error_message}}
-    </div>
-    <div class="btn-group">
-        <button type="button" @click="register" class="btn btn-outline-primary">Create account</button>
-    </div>
+    <div class="alert alert-danger" role="alert" v-if="show_error">{{error_message}}</div>
+    <button type="button" @click="register" class="btn btn-outline-primary">Create account</button>
 </template>

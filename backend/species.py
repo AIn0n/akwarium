@@ -1,5 +1,5 @@
 from app import app, species_db, users_db
-from flask import request
+from flask import request, jsonify
 
 # login part
 logged_users = set()
@@ -51,6 +51,14 @@ def add_species_aggressor():
 def get_species_names():
     return [x["name"] for x in species_db.find({})]
 
+
+@app.route("/species", methods=["GET"])
+def get_species():
+    res = species_db.find({})
+    for elem in res:
+        elem["_id"] = str(elem["_id"])
+
+    return jsonify(list(res))
 
 @app.route("/species-aggressors", methods=["GET"])
 def get_species_aggressors():
