@@ -20,6 +20,24 @@ def add_fish():
     if species_names.count(species) != 1:
         return "Invalid species name", 419
 
+    
+    this_user = users_db.find_one({"_id": ObjectId(str(id))})
+    
+    this_aquarium = None
+    for aquarium in this_user["aquarium"]:
+        if aquarium['name'] == aquarium_name:
+            this_aquarium = aquarium
+    if(this_aquarium == None):
+        return "Invalid aquarium name", 420
+
+    for fish in this_aquarium["fish"]:
+        if fish['name'] == name:
+            return "A fish with this name already exists", 421
+
+    # fish_names = [x["name"] for x in users_db.find({})]
+    # if user_names.count(name) != 1:
+    #     return "Invalid species name", 419
+
     # todo: Replace species string with a species object
     obj = {
         "name": name,

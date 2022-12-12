@@ -68,10 +68,14 @@ def add_incompatibilities():
     if species_names.count(aggressor_name) != 1:
         return "Invalid aggressor name", 419
 
-    # incompatibility insertion
+    # Incompatibility insertion
     users_db.find_one_and_update(
         {"name": subject_name},
         {"$push": {"incompatibilities": aggressor_name}},
+    )
+    users_db.find_one_and_update(
+        {"name": aggressor_name},
+        {"$push": {"incompatibilities": subject_name}},
     )
 
     return "Success", 200

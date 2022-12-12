@@ -68,3 +68,37 @@ def logout():
     logged_users.remove(fl.current_user)
     fl.logout_user()
     return "Success", 200
+
+@app.route("/change-email", methods=["POST"])
+@fl.login_required
+def change_email():
+    id = fl.current_user.id
+    new_email = request.form["new_email"]
+    
+    filter =  {"_id": ObjectId(str(id))}
+    update = {"$set": {"email": new_email}}
+    users_db.update_one(filter, update)
+    return "Success", 200
+
+@app.route("/change-password", methods=["POST"])
+@fl.login_required
+def change_password():
+    id = fl.current_user.id
+    new_password = request.form["new_password"]
+    
+    filter =  {"_id": ObjectId(str(id))}
+    update = {"$set": {"password": new_password}}
+    users_db.update_one(filter, update)
+    return "Success", 200
+
+
+@app.route("/change-username", methods=["POST"])
+@fl.login_required
+def change_username():
+    id = fl.current_user.id
+    new_username = request.form["new_username"]
+    
+    filter =  {"_id": ObjectId(str(id))}
+    update = {"$set": {"username": new_username}}
+    users_db.update_one(filter, update)
+    return "Success", 200
