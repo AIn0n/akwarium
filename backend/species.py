@@ -16,7 +16,7 @@ def add_species():
     min_GH = request.form["min_GH"]
     min_NO3 = request.form["min_NO3"]
     min_NO2 = request.form["min_NO2"]
-    min_pH: float  = request.form["min_pH"]
+    min_pH: float = request.form["min_pH"]
 
     max_KH = request.form["max_KH"]
     max_GH = request.form["max_GH"]
@@ -24,31 +24,31 @@ def add_species():
     max_NO2 = request.form["max_NO2"]
     max_pH: float = request.form["max_pH"]
 
-
     required_size: float = request.form["required_size"]
 
     # Species insertion
-    
-    species_db.insert_one({
-        "name": name,
-        "water_requirements": {
-            'min': {
-                'KH': min_KH,
-                'GH': min_GH,
-                'NO3': min_NO3,
-                'NO2': min_NO2,
-                'pH': min_pH
+
+    species_db.insert_one(
+        {
+            "name": name,
+            "water_requirements": {
+                "min": {
+                    "KH": min_KH,
+                    "GH": min_GH,
+                    "NO3": min_NO3,
+                    "NO2": min_NO2,
+                    "pH": min_pH,
+                },
+                "max": {
+                    "KH": max_KH,
+                    "GH": max_GH,
+                    "NO3": max_NO3,
+                    "NO2": max_NO2,
+                    "pH": max_pH,
+                },
             },
-            'max': {
-                'KH': max_KH,
-                'GH': max_GH,
-                'NO3': max_NO3,
-                'NO2': max_NO2,
-                'pH': max_pH
-            }
-        },
-        "required_size": required_size,
-        "incompatibilities": [],
+            "required_size": required_size,
+            "incompatibilities": [],
         }
     )
     return "Success", 200
@@ -90,6 +90,7 @@ def get_species_names():
 def get_species_incompatibilities():
     name = request.form["name"]
     return species_db.find_one({"name": name})["incompatibilities"]
+
 
 @app.route("/delete-species", methods=["DELETE"])
 def delete_species():

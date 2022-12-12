@@ -4,7 +4,6 @@ from bson.objectid import ObjectId
 import flask_login as fl
 
 
-
 @fl.login_required
 @app.route("/add-fish", methods=["POST"])
 def add_fish():
@@ -20,18 +19,17 @@ def add_fish():
     if species_names.count(species) != 1:
         return "Invalid species name", 419
 
-    
     this_user = users_db.find_one({"_id": ObjectId(str(id))})
-    
+
     this_aquarium = None
     for aquarium in this_user["aquarium"]:
-        if aquarium['name'] == aquarium_name:
+        if aquarium["name"] == aquarium_name:
             this_aquarium = aquarium
-    if(this_aquarium == None):
+    if this_aquarium == None:
         return "Invalid aquarium name", 420
 
     for fish in this_aquarium["fish"]:
-        if fish['name'] == name:
+        if fish["name"] == name:
             return "A fish with this name already exists", 421
 
     # fish_names = [x["name"] for x in users_db.find({})]
@@ -54,23 +52,19 @@ def add_fish():
 
     return "Success", 200
 
+
 @fl.login_required
 @app.route("/delete-fish", methods=["DELETE"])
 def delete_fish():
     id = fl.current_user.id
     name = request.form["name"]
     aquarium_name = request.form["aquarium_name"]
-    
 
     # Doesn't seem to delete for some reason
     result = users_db.find_one_and_update(
         {"_id": ObjectId(str(id))},
-        {"$pull": {
-            "aquarium.$[a].fish": {
-                "name": name
-            }
-        }},
-        array_filters=[{"a.name": aquarium_name}]
+        {"$pull": {"aquarium.$[a].fish": {"name": name}}},
+        array_filters=[{"a.name": aquarium_name}],
     )
 
     print(f"The collections are ")
