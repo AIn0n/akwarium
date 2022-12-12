@@ -9,18 +9,20 @@ import flask_login as fl
 def add_fish():
     id = fl.current_user.id
 
+    # Necessary forms
     name = request.form["name"]
     species = request.form["species"]
     birth_date = request.form["birth_date"]
-
     aquarium_name = request.form["aquarium_name"]
 
+    # Species name validation
     species_names = [x["name"] for x in species_db.find({})]
     if species_names.count(species) != 1:
         return "Invalid species name", 419
 
     this_user = users_db.find_one({"_id": ObjectId(str(id))})
 
+    # Aquarium name validation
     this_aquarium = None
     for aquarium in this_user["aquarium"]:
         if aquarium["name"] == aquarium_name:
@@ -28,13 +30,32 @@ def add_fish():
     if this_aquarium == None:
         return "Invalid aquarium name", 420
 
+    # Fish name validation
     for fish in this_aquarium["fish"]:
         if fish["name"] == name:
             return "A fish with this name already exists", 421
 
-    # fish_names = [x["name"] for x in users_db.find({})]
-    # if user_names.count(name) != 1:
-    #     return "Invalid species name", 419
+    # Issue handling
+    issues = []
+    for fish in this_aquarium["fish"]:
+        if (
+            fish["species"]
+            in species_db.find_one({"name": species})["incompatibilities"]
+        ):
+            issues.append("Incompatible species with " + fish["name"])
+            users_db.update_one(
+                {"_id": ObjectId(str(id))},
+                {
+                    "$push": {
+                        "aquarium.$[a].fish.$[b].issues": "Incompatible species with "
+                        + name
+                    }
+                },
+                array_filters=[
+                    {"a.name": aquarium_name},
+                    {"b.name": fish["name"]},
+                ],
+            )
 
     # todo: Replace species string with a species object
     obj = {
@@ -42,6 +63,7 @@ def add_fish():
         "species": species,
         "birth_date": birth_date,
         "status": "OK",
+        "issues": issues,
     }
 
     users_db.find_one_and_update(

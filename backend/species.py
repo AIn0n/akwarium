@@ -1,8 +1,5 @@
-from app import app, species_db, users_db
+from app import app, species_db
 from flask import request
-
-# login part
-logged_users = set()
 
 
 @app.route("/add-species", methods=["POST"])
@@ -54,7 +51,6 @@ def add_species():
     return "Success", 200
 
 
-### DOESN'T SEEM TO WORK PROPERLY
 @app.route("/add-incompatibilities", methods=["POST"])
 def add_incompatibilities():
     # Necessary forms
@@ -68,12 +64,12 @@ def add_incompatibilities():
     if species_names.count(aggressor_name) != 1:
         return "Invalid aggressor name", 419
 
-    # Incompatibility insertion
-    users_db.find_one_and_update(
+    # Mutual incompatibility insertion
+    species_db.find_one_and_update(
         {"name": subject_name},
         {"$push": {"incompatibilities": aggressor_name}},
     )
-    users_db.find_one_and_update(
+    species_db.find_one_and_update(
         {"name": aggressor_name},
         {"$push": {"incompatibilities": subject_name}},
     )
