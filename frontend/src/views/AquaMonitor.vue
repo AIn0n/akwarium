@@ -10,15 +10,13 @@ import instance from '../configs/axios_instance';
 const aquariumStore = useAquariumStore();
 const alertStore = useAlertsStore();
 const router = useRouter();
-const aquarium = ref({});
 
 onBeforeMount(()=>{
   const result = instance.get("aquarium/" + aquariumStore.aquarium)
     .then((res)=>{
-      aquarium.value = res.data;
-      console.log(aquarium.value);
+      aquariumStore.aquarium = res.data;
     }).catch((e)=> {
-      alertStore.set_danger("cannot connect to the server");
+      alertStore.set_danger("cannot connect to the server " + e);
       router.push('/Aquariums');
     });
 });
@@ -61,7 +59,7 @@ const water_requirements = {
       </a>
     </div>
     <div class="col container text-center mx-3">
-      <h3 class="display-6 my-3">{{ aquariumStore.aquarium }}</h3>
+      <h3 class="display-6 my-3">{{ aquariumStore.aquarium.name }}</h3>
       <div class="row">
         <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
