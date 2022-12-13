@@ -3,21 +3,26 @@ import { onBeforeMount, ref } from 'vue';
 import Navbar from '../components/Navbar.vue';
 import instance from '../configs/axios_instance';
 import { useAlertsStore } from '../stores/alerts';
+import { useAquariumStore } from '../stores/aquarium';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const alertsStore = useAlertsStore();
+const aquariumStore = useAquariumStore();
 const species = ref({});
 
 onBeforeMount(()=>{
-  const result = instance.get('/species-names')
-    .then((res)=>{ species.value = res.data; }).catch((res)=>{
+  const result = instance.get('/species')
+    .then((res)=>{
+      species.value = res.data;
+      console.log(species.value);
+    }).catch((res)=>{
       alertsStore.set_danger("cannot connect to species database, try again later :(")
       router.push("/Aquariums");
     })
 });
 
-const specie = ref("");
+const specie = ref();
 
 function pickSpecie(new_specie)
 {
@@ -30,6 +35,21 @@ const age = ref(0);
 
 function add_fish()
 {
+  console.log(name.value);
+  console.log(specie.value.name);
+  console.log(aquariumStore.aquarium.name)
+  const result = instance.post('/add-fish', {
+    name: name.value,
+    birth_date: "123",
+    species: specie.name,
+    aquarium_name: aquariumStore.aquarium.name
+  }).then((e) => {
+    alertsStore.set_success("successfully added new fish");
+    router.push('/Aquariums');
+  }).catch((e) => {
+    alertsStore.set_danger("cannot connect to the server, try again later");
+    router.push('/Aquariums');
+  });
 }
 
 </script>
@@ -39,38 +59,14 @@ function add_fish()
   <div class="row">    
     <div class="list-group list-group-flush col-3">
       <a href="#" class="list-group-item list-group-item-action"
-      v-for="s in species"
-      @click="pickSpecie(s)">
-        {{s}}
-      </a>
+      v-for="s in species" @click="pickSpecie(s)">{{s['name']}}</a>
     </div>
-    <div class="col container text-center  mx-3">
-      <h3 class="display-6 my-3">hello again!</h3>
+    <div v-if="specie !== undefined" class="col container text-center mx-3">
+      <h3 class="display-6 my-3">{{specie['name']}}</h3>
       <div class="row">
-        <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="col-5 rounded mx-auto" alt="...">
+        <img src="https://images.ladbible.com/resize?type=jpeg&url=http://20.theladbiblegroup.com/s3/content/047a8d1459c7d8e0787dd77e94594249.png&quality=70&width=720&aspectratio=16:9" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
-          <thead class="table-dark">
-            <tr>
-              <th scope="col">name</th>
-              <th scope="col">current</th>
-              <th scope="col">minimum</th>
-              <th scope="col">maximum</th>
-            </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>NO2</td>
-            <td>12</td>
-            <td>5</td>
-            <td>15</td>
-          </tr>
-          <tr>
-            <td>NO3</td>
-            <td>13</td>
-            <td>6</td>
-            <td>20</td>
-          </tr>
-        </tbody>
+          <WaterTable :water="aquariumStore.aquarium['water']" :requirements="specie['water_requirements']" />
         </table>
       </div>
       <div class="container text-center row my-3">
@@ -81,5 +77,6 @@ function add_fish()
         </button>
       </div>
     </div>
+    <h3 v-else class="col display-5 my-auto mx-auto text-center">Choose specie</h3>
   </div>
 </template>
