@@ -6,8 +6,6 @@ from flask import request
 def add_species():
     # Necessary forms
     name = request.form["name"]
-    water_requirements = request.form["water_requirements"]
-    required_size: float = request.form["required_size"]
 
     min_KH = request.form["min_KH"]
     min_GH = request.form["min_GH"]
