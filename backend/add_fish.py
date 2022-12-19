@@ -9,7 +9,7 @@ import flask_login as fl
 @app.route("/add-fish", methods=["POST"])
 def add_fish():
     id = fl.current_user.id
-
+    print("HERE")
     name = request.form["name"]
     species = request.form["species"]
     birth_date = request.form["birth_date"]
