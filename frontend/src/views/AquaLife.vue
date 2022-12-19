@@ -19,7 +19,7 @@ onBeforeMount(()=>{
       console.log(species.value);
     }).catch((res)=>{
       alertsStore.set_danger("cannot connect to species database, try again later :(")
-      router.push("/Aquariums");
+      router.push('/aquaMonitor');
     })
 });
 
@@ -46,11 +46,10 @@ function add_fish()
     aquarium_name: aquariumStore.aquarium.name
   }).then((e) => {
     alertsStore.set_success("successfully added new fish");
-    router.push('/Aquariums');
   }).catch((e) => {
     alertsStore.set_danger("cannot connect to the server, try again later");
-    router.push('/Aquariums');
   });
+  router.push('/aquaMonitor');
 }
 
 </script>
