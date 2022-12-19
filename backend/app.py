@@ -20,3 +20,4 @@ import log_in as log_in
 import aquarium as aquarium
 import add_fish as add_fish
 import species as species
+import log as log
