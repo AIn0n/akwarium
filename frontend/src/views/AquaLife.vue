@@ -2,6 +2,7 @@
 import { onBeforeMount, ref } from 'vue';
 import Navbar from '../components/Navbar.vue';
 import instance from '../configs/axios_instance';
+import WaterTable from '../components/WaterTable.vue';
 import { useAlertsStore } from '../stores/alerts';
 import { useAquariumStore } from '../stores/aquarium';
 import { useRouter } from 'vue-router';
@@ -41,7 +42,7 @@ function add_fish()
   const result = instance.post('/add-fish', {
     name: name.value,
     birth_date: "123",
-    species: specie.name,
+    species: specie.value.name,
     aquarium_name: aquariumStore.aquarium.name
   }).then((e) => {
     alertsStore.set_success("successfully added new fish");

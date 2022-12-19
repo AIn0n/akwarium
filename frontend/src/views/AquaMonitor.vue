@@ -50,7 +50,7 @@ const water_requirements = {
   <Navbar />
   <div class="row">    
     <div class="list-group list-group-flush col-3">
-      <a href="#" class="list-group-item list-group-item-action" v-for="fish in aquarium.value.fish">
+      <a href="#" class="list-group-item list-group-item-action" v-for="fish in aquariumStore.aquarium.fish">
         {{fish.name}}
           <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
           {{fish.problems.length}}
