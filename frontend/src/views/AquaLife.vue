@@ -11,6 +11,9 @@ const router = useRouter();
 const alertsStore = useAlertsStore();
 const aquariumStore = useAquariumStore();
 const species = ref({});
+const specie = ref();
+const name = ref("");
+const age = ref(0);
 
 onBeforeMount(()=>{
   const result = instance.get('/species')
@@ -23,16 +26,7 @@ onBeforeMount(()=>{
     })
 });
 
-const specie = ref();
-
-function pickSpecie(new_specie)
-{
-  specie.value = new_specie;
-  console.log(specie.value);
-}
-
-const name = ref("");
-const age = ref(0);
+function pickSpecie(new_specie) { specie.value = new_specie; }
 
 function add_fish()
 {
@@ -44,14 +38,13 @@ function add_fish()
     birth_date: "123",
     species: specie.value.name,
     aquarium_name: aquariumStore.aquarium.name
-  }).then((e) => {
-    alertsStore.set_success("successfully added new fish");
-  }).catch((e) => {
-    alertsStore.set_danger("cannot connect to the server, try again later");
+  }).then((e) => { alertsStore.set_success("successfully added new fish");})
+    .catch((e) => {
+      alertsStore.set_danger("cannot connect to the server, try again later");
   });
   router.push('/aquaMonitor');
 }
-
+console.log(aquariumStore.aquarium['water']);
 </script>
 
 <template>
