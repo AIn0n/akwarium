@@ -1,5 +1,26 @@
 <script setup>
-  import Navbar from '../components/Navbar.vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import Navbar from '../components/Navbar.vue';
+import instance from '../configs/axios_instance';
+import { useAlertsStore } from '../stores/alerts';
+
+const new_password = ref("");
+const alertsStore = useAlertsStore();
+const router = useRouter();
+
+function change_password()
+{
+  const result = instance.post('/change-password',{
+    new_password: new_password.value
+  }).then((res) => {
+    alertsStore.set_success("password changed properly :D");
+  }).catch((e)=>{
+    alertsStore.set_danger("cannot change password");
+  });
+  router.push("/Aquariums");
+}
+
 </script>
 
 <template>
@@ -26,8 +47,8 @@
         <div class="form-group mx-sm-3 mb-1">
           <label for="inputPassword2" class="sr-only">New Password</label>
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Input new password" aria-label="User's password" aria-describedby="button-addon2">
-            <button class="btn btn-success" type="button" id="button-addon2">Confirm</button>
+            <input v-model="new_password" type="text" class="form-control" placeholder="Input new password" aria-label="User's password" aria-describedby="button-addon2">
+            <button class="btn btn-success" type="button" id="button-addon2" @click="change_password">Confirm</button>
           </div>
             </div>
         </form>
