@@ -2,6 +2,7 @@
 import { onBeforeMount, ref } from 'vue';
 import Navbar from '../components/Navbar.vue';
 import instance from '../configs/axios_instance';
+import WaterTable from '../components/WaterTable.vue';
 import { useAlertsStore } from '../stores/alerts';
 import { useAquariumStore } from '../stores/aquarium';
 import { useRouter } from 'vue-router';
@@ -10,6 +11,9 @@ const router = useRouter();
 const alertsStore = useAlertsStore();
 const aquariumStore = useAquariumStore();
 const species = ref({});
+const specie = ref();
+const name = ref("");
+const age = ref(0);
 
 onBeforeMount(()=>{
   const result = instance.get('/species')
@@ -18,20 +22,11 @@ onBeforeMount(()=>{
       console.log(species.value);
     }).catch((res)=>{
       alertsStore.set_danger("cannot connect to species database, try again later :(")
-      router.push("/Aquariums");
+      router.push('/aquaMonitor');
     })
 });
 
-const specie = ref();
-
-function pickSpecie(new_specie)
-{
-  specie.value = new_specie;
-  console.log(specie.value);
-}
-
-const name = ref("");
-const age = ref(0);
+function pickSpecie(new_specie) { specie.value = new_specie; }
 
 function add_fish()
 {
@@ -41,17 +36,15 @@ function add_fish()
   const result = instance.post('/add-fish', {
     name: name.value,
     birth_date: "123",
-    species: specie.name,
+    species: specie.value.name,
     aquarium_name: aquariumStore.aquarium.name
-  }).then((e) => {
-    alertsStore.set_success("successfully added new fish");
-    router.push('/Aquariums');
-  }).catch((e) => {
-    alertsStore.set_danger("cannot connect to the server, try again later");
-    router.push('/Aquariums');
+  }).then((e) => { alertsStore.set_success("successfully added new fish");})
+    .catch((e) => {
+      alertsStore.set_danger("cannot connect to the server, try again later");
   });
+  router.push('/aquaMonitor');
 }
-
+console.log(aquariumStore.aquarium['water']);
 </script>
 
 <template>
