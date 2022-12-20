@@ -47,7 +47,7 @@ function change_password()
         <div class="form-group mx-sm-3 mb-1">
           <label for="inputPassword2" class="sr-only">New Password</label>
           <div class="input-group mb-3">
-            <input v-model="new_password" type="text" class="form-control" placeholder="Input new password" aria-label="User's password" aria-describedby="button-addon2">
+            <input v-model="new_password" type="password" class="form-control" placeholder="Input new password" aria-label="User's password" aria-describedby="button-addon2">
             <button class="btn btn-success" type="button" id="button-addon2" @click="change_password">Confirm</button>
           </div>
             </div>
