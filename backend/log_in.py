@@ -45,17 +45,29 @@ def register():
     password = request.form["password"]
 
     if users_db.find_one({"name": name}) != None:
-        return jsonify({"message": "This nickname is already in use", "code": 418})
-    if not re.fullmatch(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", email):
-        return jsonify({"message": "This is not a proper email addess", "code": 418})
+        return jsonify(
+            {"message": "This nickname is already in use", "code": 418}
+        )
+    if not re.fullmatch(
+        r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", email
+    ):
+        return jsonify(
+            {"message": "This is not a proper email addess", "code": 418}
+        )
     if users_db.find_one({"email": email}) != None:
         return jsonify({"message": "This email is already in use", "code": 418})
 
     users_db.insert_one(
-        {"email": email, "name": name, "password": password, "aquarium": [], "logs_id":ObjectId()}
+        {
+            "email": email,
+            "name": name,
+            "password": password,
+            "aquarium": [],
+            "logs_id": ObjectId(),
+        }
     )
     x = users_db.find_one({"name": name})
-    logs_db.insert_one({'_id':x['logs_id']})
+    logs_db.insert_one({"_id": x["logs_id"]})
     user = User(x["_id"])
     fl.login_user(user)
     logged_users.add(user)
@@ -67,4 +79,40 @@ def register():
 def logout():
     logged_users.remove(fl.current_user)
     fl.logout_user()
+    return "Success", 200
+
+
+@app.route("/change-email", methods=["POST"])
+@fl.login_required
+def change_email():
+    id = fl.current_user.id
+    new_email = request.form["new_email"]
+
+    filter = {"_id": ObjectId(str(id))}
+    update = {"$set": {"email": new_email}}
+    users_db.update_one(filter, update)
+    return "Success", 200
+
+
+@app.route("/change-password", methods=["POST"])
+@fl.login_required
+def change_password():
+    id = fl.current_user.id
+    new_password = request.form["new_password"]
+
+    filter = {"_id": ObjectId(str(id))}
+    update = {"$set": {"password": new_password}}
+    users_db.update_one(filter, update)
+    return "Success", 200
+
+
+@app.route("/change-username", methods=["POST"])
+@fl.login_required
+def change_username():
+    id = fl.current_user.id
+    new_username = request.form["new_username"]
+
+    filter = {"_id": ObjectId(str(id))}
+    update = {"$set": {"username": new_username}}
+    users_db.update_one(filter, update)
     return "Success", 200
