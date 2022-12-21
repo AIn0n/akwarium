@@ -1,5 +1,13 @@
 <script setup>
+import { useRouter } from 'vue-router';
+
 const props = defineProps(['fish_list']);
+const router = useRouter();
+
+function pickFish()
+{
+
+}
 </script>
 
 <template>
