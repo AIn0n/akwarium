@@ -3,11 +3,18 @@ import { defineStore } from "pinia";
 export const useAquariumStore = defineStore({
   id: "aquarium",
   state: () => ({
-    aquarium: ""
+    aquarium_name: "",
+    aquarium_object: {},
   }),
   getters: {
     isPicked: (state) => {
-      return state.aquarium.length > 0;
+      return state.aquarium_name != "";
+    }
+  },
+  actions: {
+    reset() {
+      this.aquarium_name = "";
+      this.aquarium_object = {};
     }
   }
 });
