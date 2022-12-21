@@ -4,8 +4,9 @@ import { useAquariumStore } from '../stores/aquarium';
 import { useAlertsStore } from '../stores/alerts';
 import WaterTable from '../components/WaterTable.vue';
 import { useRouter } from 'vue-router';
-import { ref, onBeforeMount } from 'vue';
+import { onBeforeMount } from 'vue';
 import instance from '../configs/axios_instance';
+import FishList from '../components/FishList.vue';
 
 const aquariumStore = useAquariumStore();
 const alertStore = useAlertsStore();
@@ -50,15 +51,7 @@ const water_requirements = {
 <template>
   <Navbar />
   <div class="row">
-    <div class="list-group list-group-flush col-3">
-      <a href="#" class="list-group-item list-group-item-action" v-for="fish in aquariumStore.aquarium_object.fish">
-        {{fish.name}}
-          <span v-if="fish.issues.length > 0" class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
-          {{fish.issues.length}}
-          <span class="visually-hidden">problems</span>
-        </span>
-      </a>
-    </div>
+    <FishList :fish_list="aquariumStore.aquarium_object.fish" />
     <div class="col container text-center mx-3">
       <h3 class="display-6 my-3">{{ aquariumStore.aquarium_name }}</h3>
       <div class="row my-3">
