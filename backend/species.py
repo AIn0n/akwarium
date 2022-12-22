@@ -75,9 +75,11 @@ def add_incompatibilities():
     return "Success", 200
 
 
+# Returns the names of all existing species
 @app.route("/species-names", methods=["GET"])
 def get_species_names():
     return [x["name"] for x in species_db.find({})]
+
 
 @app.route("/species", methods=["GET"])
 def get_species():
@@ -85,6 +87,7 @@ def get_species():
     for elem in res:
         elem["_id"] = str(elem["_id"])
     return res
+
 
 @app.route("/incompatibilities", methods=["GET"])
 def get_species_incompatibilities():
