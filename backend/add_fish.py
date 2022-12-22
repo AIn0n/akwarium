@@ -2,6 +2,7 @@ from app import app, users_db, species_db
 from flask import request
 from bson.objectid import ObjectId
 import flask_login as fl
+import datetime
 
 
 def find_fish(name, aquarium):
@@ -24,7 +25,7 @@ def add_fish():
     id = fl.current_user.id
     name = request.form["name"]
     species = request.form["species"]
-    birth_date = request.form["birth_date"]
+    week_age = int(request.form["week_age"])
     aquarium_name = request.form["aquarium_name"]
 
     # Species name validation
@@ -75,7 +76,12 @@ def add_fish():
                 ],
             )
 
-    # todo: Replace species string with a species object
+    now = datetime.datetime.now()
+    try:
+        birth_date = now - datetime.timedelta(weeks=week_age)
+    except TypeError:
+        return "Invalid fish age data type", 422
+
     obj = {
         "name": name,
         "species": species,
