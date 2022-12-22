@@ -1,24 +1,31 @@
 <script setup>
+// components
 import Navbar from '../components/Navbar.vue';
+import WaterTable from '../components/WaterTable.vue';
+import FishList from '../components/FishList.vue';
+// stores
 import { useAquariumStore } from '../stores/aquarium';
 import { useAlertsStore } from '../stores/alerts';
-import WaterTable from '../components/WaterTable.vue';
+import { usePickedFishStore } from '../stores/pickedFish';
+// vue elements and already configured elements
 import { useRouter } from 'vue-router';
-import { ref, onBeforeMount } from 'vue';
+import { onBeforeMount } from 'vue';
 import instance from '../configs/axios_instance';
 
 const aquariumStore = useAquariumStore();
+const pickedFishStore = usePickedFishStore();
 const alertStore = useAlertsStore();
 const router = useRouter();
 
 onBeforeMount(()=>{
-  const result = instance.get("aquarium/" + aquariumStore.aquarium)
+  const result = instance.get("aquarium/" + aquariumStore.aquarium_name)
     .then((res)=>{
-      aquariumStore.aquarium = res.data;
+      aquariumStore.aquarium_object = res.data;
     }).catch((e)=> {
       alertStore.set_danger("cannot connect to the server " + e);
       router.push('/Aquariums');
     });
+    pickedFishStore.name = "";
 });
 
 const water = {
@@ -49,27 +56,16 @@ const water_requirements = {
 <template>
   <Navbar />
   <div class="row">
-    <div class="list-group list-group-flush col-3">
-      <a href="#" class="list-group-item list-group-item-action" v-for="fish in aquariumStore.aquarium.fish">
-        {{fish.name}}
-          <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
-          {{fish.problems.length}}
-          <span class="visually-hidden">problems</span>
-        </span>
-      </a>
-    </div>
+    <FishList :fish_list="aquariumStore.aquarium_object.fish" />
     <div class="col container text-center mx-3">
-      <h3 class="display-6 my-3">{{ aquariumStore.aquarium.name }}</h3>
+      <h3 class="display-6 my-3">{{ aquariumStore.aquarium_name }}</h3>
       <div class="row my-3">
         <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
           <WaterTable :water="water" :requirements="water_requirements" />
         </table>
       </div>
-      <div 
-        v-if="alertStore.picker_show"
-        :class="alertStore.style"
-        role="alert">
+      <div v-if="alertStore.picker_show" :class="alertStore.style" role="alert">
           {{ alertStore.picker_alert }}
         <button type="button" class="btn-close" aria-label="Close" @click="alertStore.reset()"></button>
       </div>

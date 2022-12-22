@@ -12,6 +12,7 @@ const aquariumStore = useAquariumStore();
 const alertsStore = useAlertsStore();
 
 onBeforeMount(()=>{
+  aquariumStore.reset();
   let result = instance.get('/aquariums-names')
     .then(res => {
       aquariums.value = res.data; 
@@ -19,7 +20,7 @@ onBeforeMount(()=>{
 });
 
 function pickAquarium(aquarium_name) {
-  aquariumStore.aquarium = aquarium_name;
+  aquariumStore.aquarium_name = aquarium_name;
   router.push('/aquaMonitor');
 }
 
