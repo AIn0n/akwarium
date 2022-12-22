@@ -1,5 +1,5 @@
 from app import app, species_db
-from flask import request
+from flask import request, jsonify
 
 
 @app.route("/add-species", methods=["POST"])
@@ -81,12 +81,24 @@ def get_species_names():
     return [x["name"] for x in species_db.find({})]
 
 
+# Returns a detailed list of existing species
 @app.route("/species", methods=["GET"])
 def get_species():
     res = list(species_db.find({}))
     for elem in res:
         elem["_id"] = str(elem["_id"])
     return res
+
+
+# Returns a single species by name
+@app.route("/species-by-name", methods=["GET"])
+def get_species_by_name():
+    name = request.form["name"]
+    species = species_db.find_one({"name": name})
+    species["_id"] = str(
+        species["_id"]
+    )  # Stringifying the _id to make the object serialisable
+    return jsonify(species)
 
 
 @app.route("/incompatibilities", methods=["GET"])
