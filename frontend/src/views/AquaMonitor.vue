@@ -1,14 +1,19 @@
 <script setup>
+// components
 import Navbar from '../components/Navbar.vue';
+import WaterTable from '../components/WaterTable.vue';
+import FishList from '../components/FishList.vue';
+// stores
 import { useAquariumStore } from '../stores/aquarium';
 import { useAlertsStore } from '../stores/alerts';
-import WaterTable from '../components/WaterTable.vue';
+import { usePickedFishStore } from '../stores/pickedFish';
+// vue elements and already configured elements
 import { useRouter } from 'vue-router';
 import { onBeforeMount } from 'vue';
 import instance from '../configs/axios_instance';
-import FishList from '../components/FishList.vue';
 
 const aquariumStore = useAquariumStore();
+const pickedFishStore = usePickedFishStore();
 const alertStore = useAlertsStore();
 const router = useRouter();
 
@@ -20,7 +25,7 @@ onBeforeMount(()=>{
       alertStore.set_danger("cannot connect to the server " + e);
       router.push('/Aquariums');
     });
-    
+    pickedFishStore.name = "";
 });
 
 const water = {
