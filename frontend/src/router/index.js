@@ -6,6 +6,7 @@ import Settings from "../views/Settings.vue";
 import AquaMonitor from '../views/AquaMonitor.vue';
 import AquaLife from '../views/AquaLife.vue';
 import FishPreview from '../views/FishPreview.vue';
+import WaterParamSetter from '../views/WaterParamSetter.vue';
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: '/fishPreview',
     name: 'fishPreview',
     component: FishPreview
+  },
+  {
+    path: '/waterParamSetter',
+    name: 'waterParamSetter',
+    component: WaterParamSetter
   }
 ];
 

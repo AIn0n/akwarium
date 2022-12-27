@@ -71,7 +71,7 @@ const water_requirements = {
       </div>
       <div class="container text-center row">
         <button type="button" class="btn btn-outline-dark col mx-3">Save logs</button>
-        <button type="button" class="btn btn-outline-dark col mx-3">Back to menu</button>
+        <button type="button" class="btn btn-outline-dark col mx-3" @click="router.push('/WaterParamSetter')">Update Water parameters</button>
       </div>
     </div>
   </div>
