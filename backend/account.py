@@ -29,12 +29,8 @@ def change_email():
 def change_password():
     id = fl.current_user.id
     new_password = request.form["new_password"]
-    current_password = request.form["current_password"]
-
-    # Password validation
-    db_current_user = users_db.find_one({"_id": ObjectId(str(id))})
-    if current_password != db_current_user["password"]:
-        return "Incorrect current password."
+    if(len(new_password.strip()) == 0):
+        return "Password has no non-whitespace symbols", 
 
     filter = {"_id": ObjectId(str(id))}
     update = {"$set": {"password": new_password}}
