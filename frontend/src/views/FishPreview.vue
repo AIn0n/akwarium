@@ -11,11 +11,13 @@ import { useAlertsStore } from '../stores/alerts';
 
 import { onBeforeMount, ref, watch } from 'vue';
 import instance from '../configs/axios_instance';
+import { useRouter } from 'vue-router';
 
 const aquariumStore = useAquariumStore();
 const pickedFishStore = usePickedFishStore();
 const alertsStore = useAlertsStore();
 
+const router = useRouter();
 const species = ref({});
 const specie = ref({});
 const fish = ref({});
@@ -45,6 +47,21 @@ onBeforeMount(()=>{
   
 })
 
+function eat_fish()
+{
+  console.log(aquariumStore.aquarium_name);
+  console.log(pickedFishStore.name);
+  const res = instance.delete('/delete-fish', {
+    'aquarium_name': aquariumStore.aquarium_name,
+    'name': pickedFishStore.name
+  }).then((res)=>{
+    alertsStore.set_success('successfully eaten the fish!');
+  }).catch((e)=> {
+    alertsStore.set_danger('cannot eat fish, please try again later :(');
+  });
+  router.push('/aquaMonitor');
+}
+
 </script>
 
 <template lang="pug">
@@ -59,4 +76,7 @@ div(class="row")
     ul(class="list-group")
       li(class="list-group-item list-group-item-danger" v-for="problem in fish.issues")
         div {{ problem }}
+    div(class="row")
+      button(class="btn btn-danger text-center my-3 mx-3 col" @click="eat_fish") eat fish!
+      button(class="btn btn-secondary text-center my-3 mx-3 col" @click="router.push('/aquaMonitor')") back to monitor
 </template>
