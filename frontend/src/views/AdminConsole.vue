@@ -8,6 +8,14 @@ const router = useRouter();
 const species = ref({});
 const alertsStore = useAlertsStore();
 
+const water_requirements = ref({
+  kh: {min: 0, max: 0},
+  gh: {min: 0, max: 0},
+  no3: {min: 0, max: 0},
+  no2: {min: 0, max: 0},
+  ph: {min: 0, max: 0}
+});
+
 onBeforeMount(()=>{
   const result = instance.get('/species-names')
     .then((res)=>{
@@ -25,6 +33,12 @@ function remove_specie(specie)
     .catch((e)=>{ alertsStore.set_danger("cannot remove specie"); });
 }
 
+function is_param_invalid(key, water_requirements)
+{
+  return water_requirements[key].min > water_requirements[key].max ||
+          water_requirements[key].min < 0 || water_requirements[key].max < 0;
+}
+
 </script>
 
 <template lang="pug">
@@ -35,8 +49,8 @@ div(class="container row")
       button(type="button" class="btn-close position-absolute start-100" aria-label="Close")
   div(class="col container text-center")
     h3(class="display-6 mt-3") Admin panel
-    div(class="row")
-      div(class="col mx-3")
+    div(class="row mx-3")
+      div(class="col")
         div(class="input-group my-3")
           span(class="input-group-text") specie name 
           input(type="text" class="form-control")
@@ -51,36 +65,11 @@ div(class="container row")
               th minimum 
               th maximum
           tbody
-            tr
-              th KH
+            tr(v-for="(val, key) in water_requirements" :class="{'table-danger': is_param_invalid(key, water_requirements)}")
+              th {{ key }}
               th
-                input(type="number" class="form-control form-control-sm")
+                input(type="number" class="form-control form-control-sm" v-model="val.min")
               th
-                input(type="number" class="form-control form-control-sm")
-            tr
-              th GH 
-              th
-                input(type="number" class="form-control form-control-sm")
-              th
-                input(type="number" class="form-control form-control-sm")
-            tr
-              th NO3
-              th
-                input(type="number" class="form-control form-control-sm")
-              th
-                input(type="number" class="form-control form-control-sm")
-            tr
-              th NO2
-              th
-                input(type="number" class="form-control form-control-sm")
-              th
-                input(type="number" class="form-control form-control-sm")
-            tr
-              th pH
-              th
-                input(type="number" class="form-control form-control-sm")
-              th
-                input(type="number" class="form-control form-control-sm")
-
+                input(type="number" class="form-control form-control-sm" v-model="val.max")
 
 </template>
