@@ -17,6 +17,7 @@ species_db = mongo_client["database"]["species"]
 # rationale for that kind of imports:
 # https://stackoverflow.com/questions/11994325/how-to-divide-flask-app-into-multiple-py-files
 import log_in as log_in
+import account as account
 import aquarium as aquarium
 import add_fish as add_fish
 import species as species
