@@ -3,6 +3,7 @@ import instance from '../configs/axios_instance';
 import { useRouter } from 'vue-router';
 import { ref, onBeforeMount } from 'vue';
 import { useAlertsStore } from '../stores/alerts';
+import AlertFromStore from '../components/AlertFromStore.vue';
 
 const router = useRouter();
 const alertsStore = useAlertsStore();
@@ -32,7 +33,7 @@ onBeforeMount(()=>{
 
 function remove_specie(specie)
 {
-  const result = instance.delete('/delete-species',{'name': specie})
+  const result = instance.delete('/delete-species',{name: specie})
     .then((res)=>{ alertsStore.set_success("sucessfully removed specie: " + specie); })
     .catch((e)=>{ alertsStore.set_danger("cannot remove specie"); });
 }
@@ -74,7 +75,7 @@ div(class="row container")
     div(class="ms-1 list-group container")
       div(class="list-group-item" v-for="specie in species")
         a {{ specie }}
-        button(type="button" class="btn-close position-absolute start-100" aria-label="Close")
+        button(type="button" class="btn-close position-absolute start-100" aria-label="Close" @click="remove_specie(specie)")
   div(class="col container text-center")
     h3(class="display-6 mt-3") Admin panel
     div(class="row mx-3")
@@ -99,9 +100,10 @@ div(class="row container")
                 input(type="number" class="form-control form-control-sm" v-model="val.min")
               th
                 input(type="number" class="form-control form-control-sm" v-model="val.max")
-        div(class="container row align-center")
+        div(class="container row align-center my-3")
           button(type="button" class="btn btn-danger col mx-3" @click="add_new_specie(name, velocity, water_requirements, incompatibles)") click me
           button(type="button" class="btn btn-danger col mx-3" @click="router.push('/Settings')") back to settings
+        AlertFromStore
       div(class="col-3")
         p(class="text-center") Select incompatibles
         select(class="form-select" v-model="incompatibles" multiple)
