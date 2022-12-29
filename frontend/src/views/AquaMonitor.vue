@@ -3,6 +3,7 @@
 import Navbar from '../components/Navbar.vue';
 import WaterTable from '../components/WaterTable.vue';
 import FishList from '../components/FishList.vue';
+import AlertFromStore from '../components/AlertFromStore.vue';
 // stores
 import { useAquariumStore } from '../stores/aquarium';
 import { useAlertsStore } from '../stores/alerts';
@@ -65,10 +66,7 @@ const water_requirements = {
           <WaterTable :water="water" :requirements="water_requirements" />
         </table>
       </div>
-      <div v-if="alertStore.picker_show" :class="alertStore.style" role="alert">
-          {{ alertStore.picker_alert }}
-        <button type="button" class="btn-close" aria-label="Close" @click="alertStore.reset()"></button>
-      </div>
+      <AlertFromStore />
       <div class="container text-center row">
         <button type="button" class="btn btn-outline-dark col mx-3">Save logs</button>
         <button type="button" class="btn btn-outline-dark col mx-3" @click="router.push('/WaterParamSetter')">Update Water parameters</button>

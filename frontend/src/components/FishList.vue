@@ -15,7 +15,7 @@ function pickFish(fish_name)
     router.push('/fishPreview')
 }
 </script>
-"list-group-item list-group-item-action"
+
 <template>
 <div class="list-group list-group-flush col-3">
   <a :class="{'list-group-item': true, 'list-group-action': true, 'active': fish.name === pickedFishStore.name}" v-for="fish in props.fish_list" @click="pickFish(fish.name)" href="#">

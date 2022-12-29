@@ -5,6 +5,7 @@ import instance from '../configs/axios_instance';
 import { useRouter } from "vue-router";
 import { useAquariumStore } from '../stores/aquarium';
 import { useAlertsStore } from '../stores/alerts';
+import AlertFromStore from '../components/AlertFromStore.vue';
 
 const router = useRouter();
 const aquariums = ref();
@@ -32,11 +33,7 @@ function gotoCreator(event) {
 <template>
 <Navbar/>
 <h3 class="display-6 my-3 text-center">hello again! Choose the aqaurium</h3>
-<div :class="alertsStore.style" role="alert"
-  v-if="alertsStore.picker_show">
-  {{ alertsStore.picker_alert }}
-  <button type="button" class="btn-close" aria-label="Close" @click="alertsStore.reset()"></button>
-</div>
+<AlertFromStore />
 <div v-for="aquarium in aquariums" class="card text-center w-50 mx-auto my-3">
   <!-- next time add here aquarium['image'], not the direct link into the image -->
   <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="card-img-top" alt="...">
