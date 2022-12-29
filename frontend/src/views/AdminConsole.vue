@@ -10,6 +10,7 @@ const alertsStore = useAlertsStore();
 const species = ref({});
 const name = ref("");
 const velocity = ref(0);
+const incompatibles = ref([]);
 
 const water_requirements = ref({
   KH: {min: 0, max: 0},
@@ -42,15 +43,25 @@ function is_param_invalid(key, water_requirements)
           water_requirements[key].min < 0 || water_requirements[key].max < 0;
 }
 
-function add_new_specie(name, vel, water_requirements)
+function add_new_specie(name, vel, water_requirements, inc_list)
 {
-  const new_specie = {};
+  const new_specie = {name: name, required_size: vel};
   for (const [key, value] of Object.entries(water_requirements)) {
     new_specie["min_" + key] = value.min;
     new_specie["max_" + key] = value.max;
   }
-  new_specie.name = name;
-  new_specie.required_size = vel;
+  const r1 = instance.post('/add-species', new_specie)
+    .then((res)=>{ alertsStore.set_success("succesfully added new specie!")})
+    .catch((e)=>{ alertsStore.set_danger("cannot add new specie")});
+
+  inc_list.forEach((elem) => {
+    instance.post('/add-incompatibilities',{
+      subject_name: name,
+      aggressor_name: elem
+    }).then((res)=> {}).catch((e)=>{
+      alertsStore.set_danger("cannot add incompatibility between " + name + " and " + elem);
+    })
+  });
   console.log(new_specie);
 }
 
@@ -89,6 +100,11 @@ div(class="row container")
               th
                 input(type="number" class="form-control form-control-sm" v-model="val.max")
         div(class="container row align-center")
-          button(type="button" class="btn btn-danger col mx-3" @click="add_new_specie(name, velocity, water_requirements)") click me
+          button(type="button" class="btn btn-danger col mx-3" @click="add_new_specie(name, velocity, water_requirements, incompatibles)") click me
           button(type="button" class="btn btn-danger col mx-3" @click="router.push('/Settings')") back to settings
+      div(class="col-3")
+        p(class="text-center") Select incompatibles
+        select(class="form-select" v-model="incompatibles" multiple)
+          option(v-for="specie in species") {{ specie }}
+
 </template>
