@@ -1,7 +1,9 @@
 from app import app, species_db
 from flask import request, jsonify
+import flask_login as fl
 
 
+@fl.login_required
 @app.route("/add-species", methods=["POST"])
 def add_species():
     # Necessary forms
@@ -20,6 +22,7 @@ def add_species():
     max_pH: float = request.form["max_pH"]
 
     required_size: float = request.form["required_size"]
+    image_URL = request.form["image_URL"]
 
     # Species insertion
 
@@ -44,11 +47,26 @@ def add_species():
             },
             "required_size": required_size,
             "incompatibilities": [],
+            "image_URL": image_URL,
         }
     )
     return "Success", 200
 
 
+@app.route("/change-species-image", methods=["POST"])
+@fl.login_required
+def change_species_image():
+    # Necessary forms
+    name = request.form["name"]
+    image_URL = request.form["image_URL"]
+    # Database update
+    filter = {"name": name}
+    update = {"$set": {"image_URL": image_URL}}
+    species_db.update_one(filter, update)
+    return "Success", 200
+
+
+@fl.login_required
 @app.route("/add-incompatibilities", methods=["POST"])
 def add_incompatibilities():
     # Necessary forms
@@ -107,6 +125,7 @@ def get_species_incompatibilities():
     return species_db.find_one({"name": name})["incompatibilities"]
 
 
+@fl.login_required
 @app.route("/delete-species", methods=["DELETE"])
 def delete_species():
     name = request.form["name"]

@@ -29,8 +29,8 @@ def change_email():
 def change_password():
     id = fl.current_user.id
     new_password = request.form["new_password"]
-    if(len(new_password.strip()) == 0):
-        return "Password has no non-whitespace symbols", 
+    if len(new_password.strip()) == 0:
+        return ("Password has no non-whitespace symbols",)
 
     filter = {"_id": ObjectId(str(id))}
     update = {"$set": {"password": new_password}}
