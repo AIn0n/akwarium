@@ -24,7 +24,7 @@ function logout() {
           <a class="nav-link" @click="()=>{ router.push('/aquaLife') }">aquaLife</a>
         </li>
         <li class="nav-item me-auto">
-          <a class="nav-link" href="#">aquaHistory</a>
+          <a class="nav-link" @click="()=>{ router.push('/aquaHistory')}">aquaHistory</a>
         </li>
       </ul>
     </div>

@@ -9,7 +9,8 @@ const router = useRouter();
 const alertsStore = useAlertsStore();
 
 const species = ref({});
-const name = ref("");
+const specie_name = ref("");
+const link = ref("");
 const velocity = ref(0);
 const incompatibles = ref([]);
 
@@ -33,7 +34,7 @@ onBeforeMount(()=>{
 
 function remove_specie(specie)
 {
-  const result = instance.delete('/delete-species',{name: specie})
+  const result = instance.delete('/delete-species',{data: {name: specie}})
     .then((res)=>{ alertsStore.set_success("sucessfully removed specie: " + specie); })
     .catch((e)=>{ alertsStore.set_danger("cannot remove specie"); });
 }
@@ -44,9 +45,9 @@ function is_param_invalid(key, water_requirements)
           water_requirements[key].min < 0 || water_requirements[key].max < 0;
 }
 
-function add_new_specie(name, vel, water_requirements, inc_list)
+function add_new_specie(name, vel, water_requirements, inc_list, img_link)
 {
-  const new_specie = {name: name, required_size: vel};
+  const new_specie = {name: name, required_size: vel, image_URL: img_link};
   for (const [key, value] of Object.entries(water_requirements)) {
     new_specie["min_" + key] = value.min;
     new_specie["max_" + key] = value.max;
@@ -82,7 +83,10 @@ div(class="row container")
       div(class="col")
         div(class="input-group my-3")
           span(class="input-group-text") specie name 
-          input(type="text" class="form-control" v-model="name")
+          input(type="text" class="form-control" v-model="specie_name")
+        div(class="input-group my-3")
+          span(class="input-group-text") link to image
+          input(type="text" class="form-control" v-model="link")
         div(class="input-group my-3")
           span(class="input-group-text") required velocity
           input(type="number" class="form-control" v-model="velocity")
@@ -101,7 +105,7 @@ div(class="row container")
               th
                 input(type="number" class="form-control form-control-sm" v-model="val.max")
         div(class="container row align-center my-3")
-          button(type="button" class="btn btn-danger col mx-3" @click="add_new_specie(name, velocity, water_requirements, incompatibles)") click me
+          button(type="button" class="btn btn-danger col mx-3" @click="add_new_specie(specie_name, velocity, water_requirements, incompatibles, link)") click me
           button(type="button" class="btn btn-danger col mx-3" @click="router.push('/Settings')") back to settings
         AlertFromStore
       div(class="col-3")

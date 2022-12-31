@@ -51,15 +51,16 @@ function eat_fish()
 {
   console.log(aquariumStore.aquarium_name);
   console.log(pickedFishStore.name);
-  const res = instance.delete('/delete-fish', {
+  const res = instance.delete('/delete-fish', {data: {
     'aquarium_name': aquariumStore.aquarium_name,
     'name': pickedFishStore.name
-  }).then((res)=>{
+  }}).then((res)=>{
     alertsStore.set_success('successfully eaten the fish!');
+    router.push('/aquaMonitor');
   }).catch((e)=> {
     alertsStore.set_danger('cannot eat fish, please try again later :(');
+    router.push('/aquaMonitor');
   });
-  router.push('/aquaMonitor');
 }
 
 </script>
