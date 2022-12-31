@@ -34,7 +34,7 @@ onBeforeMount(()=>{
 
 function remove_specie(specie)
 {
-  const result = instance.delete('/delete-species',{name: specie})
+  const result = instance.delete('/delete-species',{data: {name: specie}})
     .then((res)=>{ alertsStore.set_success("sucessfully removed specie: " + specie); })
     .catch((e)=>{ alertsStore.set_danger("cannot remove specie"); });
 }
