@@ -23,6 +23,7 @@ onBeforeMount(()=>{
       alertsStore.set_danger("cannot connect to species database, try again later :(")
       router.push('/aquaMonitor');
     })
+    console.log(species);
 });
 
 function pickSpecie(new_specie) { specie.value = new_specie; }
