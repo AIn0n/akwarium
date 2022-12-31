@@ -23,7 +23,6 @@ onBeforeMount(()=>{
       alertsStore.set_danger("cannot connect to species database, try again later :(")
       router.push('/aquaMonitor');
     })
-    console.log(species);
 });
 
 function pickSpecie(new_specie) { specie.value = new_specie; }
@@ -52,7 +51,7 @@ function add_fish()
     <div v-if="specie !== undefined" class="col container text-center mx-3">
       <h3 class="display-6 my-3">{{specie['name']}}</h3>
       <div class="row">
-        <img src="https://images.ladbible.com/resize?type=jpeg&url=http://20.theladbiblegroup.com/s3/content/047a8d1459c7d8e0787dd77e94594249.png&quality=70&width=720&aspectratio=16:9" class="col-5 rounded mx-auto" alt="...">
+        <img :src="specie['image_URL']" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
           <WaterTable :water="aquariumStore.aquarium_object['water']" :requirements="specie['water_requirements']" />
         </table>
