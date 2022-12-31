@@ -8,6 +8,7 @@ import AquaLife from '../views/AquaLife.vue';
 import FishPreview from '../views/FishPreview.vue';
 import WaterParamSetter from '../views/WaterParamSetter.vue';
 import AdminConsole from '../views/AdminConsole.vue';
+import AquaHistory from '../views/AquaHistory.vue';
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: '/AdminConsole',
     name: 'adminConsole',
     component: AdminConsole
+  },
+  {
+    path: '/AquaHistory',
+    name: 'aquaHistory',
+    component: AquaHistory
   }
 ];
 

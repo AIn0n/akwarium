@@ -61,7 +61,7 @@ const water_requirements = {
     <div class="col container text-center mx-3">
       <h3 class="display-6 my-3">{{ aquariumStore.aquarium_name }}</h3>
       <div class="row my-3">
-        <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="col-5 rounded mx-auto" alt="...">
+        <img :src="aquariumStore.aquarium_object['image']" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
           <WaterTable :water="water" :requirements="water_requirements" />
         </table>
