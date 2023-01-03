@@ -5,6 +5,10 @@ import AquariumCreator from "../views/AquariumCreator.vue";
 import Settings from "../views/Settings.vue";
 import AquaMonitor from '../views/AquaMonitor.vue';
 import AquaLife from '../views/AquaLife.vue';
+import FishPreview from '../views/FishPreview.vue';
+import WaterParamSetter from '../views/WaterParamSetter.vue';
+import AdminConsole from '../views/AdminConsole.vue';
+import AquaHistory from '../views/AquaHistory.vue';
 
 const routes = [
   {
@@ -36,6 +40,26 @@ const routes = [
     path: '/aquaLife',
     name: 'aquaLife',
     component: AquaLife
+  },
+  {
+    path: '/fishPreview',
+    name: 'fishPreview',
+    component: FishPreview
+  },
+  {
+    path: '/waterParamSetter',
+    name: 'waterParamSetter',
+    component: WaterParamSetter
+  },
+  {
+    path: '/AdminConsole',
+    name: 'adminConsole',
+    component: AdminConsole
+  },
+  {
+    path: '/AquaHistory',
+    name: 'aquaHistory',
+    component: AquaHistory
   }
 ];
 

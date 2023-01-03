@@ -1,7 +1,8 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, watch } from 'vue';
 import instance from "../configs/axios_instance";
+import { useAlertsStore } from "../stores/alerts";
 
 const router = useRouter();
 
@@ -12,10 +13,17 @@ const aquarium_name = ref("");
 const width = ref(0);
 const height = ref(0);
 const depth = ref(0);
+const alertsStore = useAlertsStore();
+const velocity = ref(0);
+
 
 function gotoMenu(event) {
   router.push("/Aquariums")
 }
+
+watch([height, width, depth], ([new_height, new_width, new_depth])=>{
+  velocity.value = new_height * new_width * new_depth * 0.001;
+});
 
 onBeforeMount(()=>{
   let result = instance.get('/devices')
@@ -24,11 +32,11 @@ onBeforeMount(()=>{
       for (const device in devices.value) {
         selected[device] = null;
       }
-    })});
+    }
+)});
 
 function createAquarium(event)
 {
-  console.log(selected)
     // TODO: wait for refactor and add all
   let result = instance.post('/add_aquarium', {
     name: aquarium_name.value,
@@ -41,7 +49,8 @@ function createAquarium(event)
     filter_id: selected.value['filter']._id,
 
   }).then((res)=>{
-    console.log(res);
+    alertsStore.set_success("Successfully created new aquarium <3")
+    router.push('/Aquariums');
   }).catch((res)=>{
     error.value = "cannot connect to the server, please try later";
   });
@@ -56,16 +65,16 @@ function createAquarium(event)
       <label for="floatingInput">Aquarium Name</label>
     </div>
     <div class="row my-3">
-      <div class="input-group mb-3 col">
-        <span class="input-group-text">Height</span>
+      <div class="input-group col">
+        <span class="input-group-text">Height (cm)</span>
         <input type="number" class="form-control" v-model="height">
       </div>
-      <div class="input-group mb-3 col">
-        <span class="input-group-text">Width</span>
+      <div class="input-group col">
+        <span class="input-group-text">Width (cm)</span>
         <input type="number" class="form-control" v-model="width">
       </div>
-      <div class="input-group mb-3 col">
-        <span class="input-group-text">Depth</span>
+      <div class="input-group col">
+        <span class="input-group-text">Depth (cm)</span>
         <input type="number" class="form-control" v-model="depth">
       </div>
     </div>
@@ -80,6 +89,7 @@ function createAquarium(event)
               <div v-if="(selected[key] != null)">
                 <h5 class="card-title">power: {{selected[key].parameter}}</h5>
                 <p class="card-text">{{selected[key].description}}</p>
+                <p v-if="selected[key].parameter < velocity" class="card-text text-danger"> please choose more powerful device</p>
               </div>
             </div>
           </div>
