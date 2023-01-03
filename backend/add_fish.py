@@ -151,4 +151,5 @@ def delete_fish():
         {"$pull": {"aquarium.$[a].fish": {"name": name}}},
         array_filters=[{"a.name": aquarium_name}],
     )
+    log.water_update(id, aquarium_name)
     return "Success", 200

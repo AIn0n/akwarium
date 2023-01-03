@@ -2,7 +2,6 @@ from app import app, users_db, device_db, logs_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
-from log import water_update
 
 
 @app.route("/add-aquarium", methods=["POST"])
@@ -10,6 +9,7 @@ from log import water_update
 def add_aquarium():
     id = fl.current_user.id
     name = request.form["name"]
+    image = request.form["image"]
     height = request.form["height"]
     width = request.form["width"]
     length = request.form["length"]
@@ -56,14 +56,14 @@ def add_aquarium():
         "height": height,
         "width": width,
         "length": length,
-        "image": "https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
+        "image": image,
         "heater_id": heater_id,
         "lamp_id": lamp_id,
         "pump_id": pump_id,
         "filter_id": filter_id,
-        "water_min": [{'KH': '', 'GH': '', 'pH': '', 'NO2': '', 'NO3': ''}],
-        "water_max": [{'KH': '', 'GH': '', 'pH': '', 'NO2': '', 'NO3': ''}],
-        "fish": []
+        "water_min": [{"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}],
+        "water_max": [{"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}],
+        "fish": [],
     }
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
@@ -108,3 +108,16 @@ def device():
             el["_id"] = str(el["_id"])
             res[type].append(el)
     return jsonify(res)
+
+
+@app.route("/<aquarium>/water-req", methods=["GET"])
+@fl.login_required
+def water_req(aquarium=None):
+    id = fl.current_user.id
+
+    x = users_db.find_one({"_id": ObjectId(str(id))})
+    for aq in x["aquarium"]:
+        if aq["name"] == aquarium:
+            x = aq
+
+    return {"min": x["water_min"][0], "max": x["water_max"][0]}
