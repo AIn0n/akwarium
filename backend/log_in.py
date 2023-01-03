@@ -52,7 +52,7 @@ def register():
         return jsonify({"message": "This email is already in use", "code": 418})
 
     users_db.insert_one(
-        {"email": email, "name": name, "password": password, "aquarium": [], "logs_id":ObjectId()}
+        {"email": email, "name": name, "password": password, "admin": False, "aquarium": [], "logs_id":ObjectId()}
     )
     x = users_db.find_one({"name": name})
     logs_db.insert_one({'_id':x['logs_id']})

@@ -1,7 +1,8 @@
 from app import app, users_db, species_db
-from flask import make_response, request, redirect, url_for, abort
+from flask import request
 from bson.objectid import ObjectId
 import flask_login as fl
+import log as log
 
 # login part
 logged_users = set()
@@ -35,5 +36,6 @@ def add_fish():
         {"$push": {"aquarium.$[a].fish": obj}},
         array_filters=[{"a.name": aquarium_name}],
     )
+    log.water_update(id, aquarium_name)
 
     return "Success", 200

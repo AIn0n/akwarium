@@ -2,6 +2,7 @@ from app import app, users_db, device_db, logs_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
+from log import water_update
 
 
 @app.route("/add-aquarium", methods=["POST"])
@@ -50,6 +51,8 @@ def add_aquarium():
         "lamp_id": lamp_id,
         "pump_id": pump_id,
         "filter_id": filter_id,
+        "water_min": [{'KH': '', 'GH': '', 'pH': '', 'NO2': '', 'NO3': ''}],
+        "water_max": [{'KH': '', 'GH': '', 'pH': '', 'NO2': '', 'NO3': ''}],
         "fish": []
     }
     users_db.find_one_and_update(
