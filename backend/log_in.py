@@ -62,6 +62,7 @@ def register():
             "email": email,
             "name": name,
             "password": password,
+            "admin": False,
             "aquarium": [],
             "logs_id": ObjectId(),
         }

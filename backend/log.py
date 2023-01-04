@@ -1,4 +1,4 @@
-from app import app, users_db, logs_db
+from app import app, users_db, logs_db, species_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
@@ -46,11 +46,11 @@ def log_add():
 
     obj = {
         "date": datetime.now(),
-        "kh": kh,
-        "gh": gh,
-        "ph": ph,
-        "no2": no2,
-        "no3": no3,
+        "KH": kh,
+        "GH": gh,
+        "PH": ph,
+        "NO2": no2,
+        "NO3": no3,
     }
 
     x = users_db.find_one({"_id": ObjectId(str(id))})
@@ -58,3 +58,34 @@ def log_add():
         {"_id": x["logs_id"]}, {"$push": {aquarium: obj}}
     )
     return "Success", 200
+
+
+def water_update(id, aquarium):
+    x = users_db.find_one({"_id": ObjectId(str(id))})
+    for aq in x["aquarium"]:
+        if aq["name"] == aquarium:
+            x = aq
+
+    min = {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}
+    max = {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}
+
+    for fish in x["fish"]:
+        species = species_db.find_one({"name": fish["species"]})
+        for el in ["KH", "GH", "pH", "NO2", "NO3"]:
+            if species["water_requirements"]["min"][el] != "":
+                if min[el] == "" or float(min[el]) < float(species["water_requirements"]["min"][el]):
+                    min[el] = float(species["water_requirements"]["min"][el])
+            if species["water_requirements"]["max"][el] != "":
+                if max[el] == "" or float(max[el]) > float(species["water_requirements"]["max"][el]):
+                    max[el] = float(species["water_requirements"]["max"][el])
+
+    users_db.find_one_and_update(
+        {"_id": ObjectId(str(id))},
+        {
+            "$set": {
+                "aquarium.$[a].water_max.0": max,
+                "aquarium.$[a].water_min.0": min,
+            }
+        },
+        array_filters=[{"a.name": aquarium}],
+    )
