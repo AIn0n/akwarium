@@ -27,8 +27,9 @@ onBeforeMount(()=>{
       router.push('/Aquariums');
     });
   instance.get('/log-newest/' + aquariumStore.aquarium_name)
-    .then((res)=> aquariumStore.water_object = res.data)
-    .catch((e)=> {
+    .then((res)=> {
+      aquariumStore.water_object = Object.fromEntries(Object.entries(res.data.message).filter(([key]) => key != 'date'));
+    }).catch((e)=> {
       alertStore.set_danger("cannot get last log " + e);
     });
   pickedFishStore.name = "";
@@ -68,7 +69,7 @@ const water_requirements = {
       <div class="row my-3">
         <img :src="aquariumStore.aquarium_object['image']" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
-          <WaterTable :water="water" :requirements="water_requirements" />
+          <WaterTable :water="aquariumStore.water_object" :requirements="water_requirements" />
         </table>
       </div>
       <AlertFromStore />
