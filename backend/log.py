@@ -5,11 +5,10 @@ from bson.objectid import ObjectId
 from datetime import datetime
 
 
-@app.route("/log-newest", methods=["GET"])
+@app.route("/log-newest/<aquarium>", methods=["GET"])
 @fl.login_required
-def log_newest():
+def log_newest(aquarium=None):
     id = fl.current_user.id
-    aquarium = request.form["aquarium"]
 
     x = users_db.find_one({"_id": ObjectId(str(id))})
     x = logs_db.find_one({"_id": x["logs_id"]})
@@ -19,11 +18,10 @@ def log_newest():
         return jsonify({"message": x[aquarium][-1], "code": 200})
 
 
-@app.route("/log-all", methods=["GET"])
+@app.route("/log-all/<aquarium>", methods=["GET"])
 @fl.login_required
-def log_all():
+def log_all(aquarium=None):
     id = fl.current_user.id
-    aquarium = request.form["aquarium"]
 
     x = users_db.find_one({"_id": ObjectId(str(id))})
     x = logs_db.find_one({"_id": x["logs_id"]})

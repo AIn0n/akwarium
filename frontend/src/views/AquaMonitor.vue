@@ -19,14 +19,19 @@ const alertStore = useAlertsStore();
 const router = useRouter();
 
 onBeforeMount(()=>{
-  const result = instance.get("aquarium/" + aquariumStore.aquarium_name)
+   instance.get("aquarium/" + aquariumStore.aquarium_name)
     .then((res)=>{
       aquariumStore.aquarium_object = res.data;
     }).catch((e)=> {
       alertStore.set_danger("cannot connect to the server " + e);
       router.push('/Aquariums');
     });
-    pickedFishStore.name = "";
+  instance.get('/log-newest/' + aquariumStore.aquarium_name)
+    .then((res)=> aquariumStore.water_object = res.data)
+    .catch((e)=> {
+      alertStore.set_danger("cannot get last log " + e);
+    });
+  pickedFishStore.name = "";
 });
 
 const water = {
