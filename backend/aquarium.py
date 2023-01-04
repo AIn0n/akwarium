@@ -69,7 +69,7 @@ def add_aquarium():
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
     )
     x = users_db.find_one({"_id": ObjectId(str(id))})["logs_id"]
-    logs_db.find_one_and_update({"_id": x}, {"$push": {name: []}})
+    logs_db.find_one_and_update({"_id": x}, {"$push": {name: [{"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}]}})
     return "Success", 200
 
 
