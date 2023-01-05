@@ -92,6 +92,8 @@ def aquarium_specific(name=None):
 
     for aq in x["aquarium"]:
         if aq["name"] == name:
+            aq['water_min'] = aq['water_min'][0]
+            aq['water_max'] = aq['water_max'][0]
             return aq
     return jsonify({"message": "Incorrect name", "code": 418})
 
@@ -108,16 +110,3 @@ def device():
             el["_id"] = str(el["_id"])
             res[type].append(el)
     return jsonify(res)
-
-
-@app.route("/<aquarium>/water-req", methods=["GET"])
-@fl.login_required
-def water_req(aquarium=None):
-    id = fl.current_user.id
-
-    x = users_db.find_one({"_id": ObjectId(str(id))})
-    for aq in x["aquarium"]:
-        if aq["name"] == aquarium:
-            x = aq
-
-    return {"min": x["water_min"][0], "max": x["water_max"][0]}
