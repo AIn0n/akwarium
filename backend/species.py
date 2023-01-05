@@ -9,16 +9,16 @@ def add_species():
     # Necessary forms
     name = request.form["name"]
 
-    min_KH = request.form["min_KH"]
-    min_GH = request.form["min_GH"]
-    min_NO3 = request.form["min_NO3"]
-    min_NO2 = request.form["min_NO2"]
+    min_KH: float = request.form["min_KH"]
+    min_GH: float = request.form["min_GH"]
+    min_NO3: float = request.form["min_NO3"]
+    min_NO2: float = request.form["min_NO2"]
     min_pH: float = request.form["min_pH"]
 
-    max_KH = request.form["max_KH"]
-    max_GH = request.form["max_GH"]
-    max_NO3 = request.form["max_NO3"]
-    max_NO2 = request.form["max_NO2"]
+    max_KH: float = request.form["max_KH"]
+    max_GH: float = request.form["max_GH"]
+    max_NO3: float = request.form["max_NO3"]
+    max_NO2: float = request.form["max_NO2"]
     max_pH: float = request.form["max_pH"]
 
     required_size: float = request.form["required_size"]

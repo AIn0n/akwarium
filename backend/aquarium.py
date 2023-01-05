@@ -2,6 +2,7 @@ from app import app, users_db, device_db, logs_db
 from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
+import json
 
 
 @app.route("/add-aquarium", methods=["POST"])
@@ -25,11 +26,11 @@ def add_aquarium():
             )
 
     if int(height) <= 0:
-        return jsonify({"message": "Height to small", "code": 418})
+        return jsonify({"message": "Height too small", "code": 418})
     if int(width) <= 0:
-        return jsonify({"message": "Width to small", "code": 418})
+        return jsonify({"message": "Width too small", "code": 418})
     if int(length) <= 0:
-        return jsonify({"message": "Length to small", "code": 418})
+        return jsonify({"message": "Length too small", "code": 418})
     try:
         if device_db.find_one({"_id": ObjectId(heater_id)}) == None:
             return jsonify(
@@ -67,6 +68,29 @@ def add_aquarium():
     )
     x = users_db.find_one({"_id": ObjectId(str(id))})["logs_id"]
     logs_db.find_one_and_update({"_id": x}, {"$push": {name: []}})
+    return "Success", 200
+
+
+@app.route("/import-aquarium", methods=["POST"])
+@fl.login_required
+def import_aquarium():
+    # Get current user
+    id = fl.current_user.id
+    user = users_db.find_one({"_id": ObjectId(str(id))})
+    # Request the aquarium object in the form of a json string
+    json_string = request.form["json_string"]
+    # Decode the string
+    aquarium_obj = json.loads(json_string)
+
+    # Check for duplicate name
+    names = [aq['name'] for aq in user["aquarium"]]
+    if(aquarium_obj['name'] in names):
+        return "Duplicate name", 419
+
+    # Insert the new aquarium into the database
+    users_db.find_one_and_update(
+        {"_id": ObjectId(str(id))}, {"$push": {"aquarium": aquarium_obj}}
+    )
     return "Success", 200
 
 
