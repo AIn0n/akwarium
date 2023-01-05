@@ -13,7 +13,7 @@ const router = useRouter();
 
 
 const logs = ref({});
-const result = instance.get('/log-all', {aquarium: aquariumStore.aquarium_name})
+const result = instance.get('/log-all/' + aquariumStore.aquarium_name)
   .then((res) => { logs.value = res.data })
   .catch((e) => {
     alertStore.set_danger('cannot get logs, try later');
