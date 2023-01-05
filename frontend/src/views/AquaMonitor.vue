@@ -34,14 +34,6 @@ onBeforeMount(()=>{
     });
   pickedFishStore.name = "";
 });
-
-const water = {
-  KH: 10,
-  GH: 10,
-  NO3: 13,
-  NO2: 12,
-  PH: 6
-};
 </script>
 
 <template>

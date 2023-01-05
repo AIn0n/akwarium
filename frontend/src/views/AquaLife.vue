@@ -53,7 +53,7 @@ function add_fish()
       <div class="row">
         <img :src="specie['image_URL']" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
-          <WaterTable :water="aquariumStore.water_object" :requirements="specie['water_requirements']" />
+          <WaterTable :water="aquariumStore.water_object" :water_min="specie.water_requirements.min" :water_max="specie.water_requirements.max" />
         </table>
       </div>
       <div class="container text-center row my-3">
