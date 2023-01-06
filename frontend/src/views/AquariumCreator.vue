@@ -15,6 +15,7 @@ const height = ref(0);
 const depth = ref(0);
 const alertsStore = useAlertsStore();
 const velocity = ref(0);
+const img_link = ref("");
 
 
 function gotoMenu(event) {
@@ -37,8 +38,7 @@ onBeforeMount(()=>{
 
 function createAquarium(event)
 {
-    // TODO: wait for refactor and add all
-  let result = instance.post('/add_aquarium', {
+  instance.post('/add-aquarium', {
     name: aquarium_name.value,
     height: height.value,
     width: width.value,
@@ -47,22 +47,28 @@ function createAquarium(event)
     lamp_id: selected.value['light']._id,
     pump_id: selected.value['pump']._id,
     filter_id: selected.value['filter']._id,
+    image: img_link.value
 
   }).then((res)=>{
     alertsStore.set_success("Successfully created new aquarium <3")
     router.push('/Aquariums');
   }).catch((res)=>{
+    console.log(res);
     error.value = "cannot connect to the server, please try later";
   });
 }
 </script>
 
 <template>
-  <div class="container text-center">
+  <div class="container text-center w-75">
     <h3 class="display-4 my-3">Create new aquarium</h3>
-    <div class="form-floating w-50 mx-auto my-3">
+    <div class="form-floating mx-auto my-3">
       <input type="email" class="form-control" placeholder="name" v-model="aquarium_name">
       <label for="floatingInput">Aquarium Name</label>
+    </div>
+    <div class="form-floating mx-auto my-3">
+      <input type="text" class="form-control" placeholder="name" v-model="img_link">
+      <label for="floatingInput"> link for image</label>
     </div>
     <div class="row my-3">
       <div class="input-group col">
