@@ -5,6 +5,7 @@ export const useAquariumStore = defineStore({
   state: () => ({
     aquarium_name: "",
     aquarium_object: {},
+    water_object : {},
   }),
   getters: {
     isPicked: (state) => {
@@ -15,6 +16,7 @@ export const useAquariumStore = defineStore({
     reset() {
       this.aquarium_name = "";
       this.aquarium_object = {};
+      this.water_object = {};
     }
   }
 });

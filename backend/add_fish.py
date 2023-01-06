@@ -2,6 +2,7 @@ from app import app, users_db, species_db
 from flask import request
 from bson.objectid import ObjectId
 import flask_login as fl
+import log as log
 import datetime
 
 
@@ -95,6 +96,7 @@ def add_fish():
         {"$push": {"aquarium.$[a].fish": obj}},
         array_filters=[{"a.name": aquarium_name}],
     )
+    log.water_update(id, aquarium_name)
 
     return "Success", 200
 
@@ -149,4 +151,5 @@ def delete_fish():
         {"$pull": {"aquarium.$[a].fish": {"name": name}}},
         array_filters=[{"a.name": aquarium_name}],
     )
+    log.water_update(id, aquarium_name)
     return "Success", 200

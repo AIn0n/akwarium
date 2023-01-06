@@ -1,5 +1,5 @@
 from app import app, users_db
-from flask import request
+from flask import request, jsonify
 import flask_login as fl
 from bson.objectid import ObjectId
 import re  # regex
@@ -48,3 +48,13 @@ def change_username():
     update = {"$set": {"username": new_username}}
     users_db.update_one(filter, update)
     return "Success", 200
+
+
+@app.route("/if-admin", methods=["GET"])
+@fl.login_required
+def admin():
+    id = fl.current_user.id
+    x = users_db.find_one({"_id": ObjectId(str(id))})
+    val = x['admin']
+
+    return jsonify({"message": val, "code": 200})

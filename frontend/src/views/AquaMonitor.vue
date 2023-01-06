@@ -19,39 +19,21 @@ const alertStore = useAlertsStore();
 const router = useRouter();
 
 onBeforeMount(()=>{
-  const result = instance.get("aquarium/" + aquariumStore.aquarium_name)
+   instance.get("aquarium/" + aquariumStore.aquarium_name)
     .then((res)=>{
       aquariumStore.aquarium_object = res.data;
     }).catch((e)=> {
       alertStore.set_danger("cannot connect to the server " + e);
       router.push('/Aquariums');
     });
-    pickedFishStore.name = "";
+  instance.get('/log-newest/' + aquariumStore.aquarium_name)
+    .then((res)=> {
+      aquariumStore.water_object = Object.fromEntries(Object.entries(res.data.message).filter(([key]) => key != 'date'));
+    }).catch((e)=> {
+      alertStore.set_danger("cannot get last log " + e);
+    });
+  pickedFishStore.name = "";
 });
-
-const water = {
-  KH: 10,
-  GH: 10,
-  NO3: 13,
-  NO2: 12,
-  PH: 6
-};
-const water_requirements = {
-  water_min: {
-    KH: 11,
-    GH: 10,
-    NO3: 10,
-    NO2: 6,
-    PH: 3,
-  },
-  water_max: {
-    KH: 20,
-    GH: 20,
-    NO3: 15,
-    NO2: 15,
-    PH: 9
-  }
-}
 </script>
 
 <template>
@@ -61,9 +43,9 @@ const water_requirements = {
     <div class="col container text-center mx-3">
       <h3 class="display-6 my-3">{{ aquariumStore.aquarium_name }}</h3>
       <div class="row my-3">
-        <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="col-5 rounded mx-auto" alt="...">
+        <img :src="aquariumStore.aquarium_object['image']" class="col-5 rounded mx-auto" alt="...">
         <table class="col table table-bordered table-striped table-hover mx-auto">
-          <WaterTable :water="water" :requirements="water_requirements" />
+          <WaterTable :water="aquariumStore.water_object" :water_min="aquariumStore.aquarium_object.water_min" :water_max="aquariumStore.aquarium_object.water_max" />
         </table>
       </div>
       <AlertFromStore />

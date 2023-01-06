@@ -10,6 +10,7 @@ import json
 def add_aquarium():
     id = fl.current_user.id
     name = request.form["name"]
+    image = request.form["image"]
     height = request.form["height"]
     width = request.form["width"]
     length = request.form["length"]
@@ -56,18 +57,20 @@ def add_aquarium():
         "height": height,
         "width": width,
         "length": length,
-        "image": "https://alerybka.pl/wp-content/uploads/2021/09/dojrzale-akwarium.jpeg",
+        "image": image,
         "heater_id": heater_id,
         "lamp_id": lamp_id,
         "pump_id": pump_id,
         "filter_id": filter_id,
+        "water_min": [{"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}],
+        "water_max": [{"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}],
         "fish": [],
     }
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
     )
     x = users_db.find_one({"_id": ObjectId(str(id))})["logs_id"]
-    logs_db.find_one_and_update({"_id": x}, {"$push": {name: []}})
+    logs_db.find_one_and_update({"_id": x}, {"$push": {name: {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}}})
     return "Success", 200
 
 
@@ -113,6 +116,8 @@ def aquarium_specific(name=None):
 
     for aq in x["aquarium"]:
         if aq["name"] == name:
+            aq['water_min'] = aq['water_min'][0]
+            aq['water_max'] = aq['water_max'][0]
             return aq
     return jsonify({"message": "Incorrect name", "code": 418})
 

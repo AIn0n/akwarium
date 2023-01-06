@@ -36,7 +36,7 @@ function gotoCreator(event) {
 <AlertFromStore />
 <div v-for="aquarium in aquariums" class="card text-center w-50 mx-auto my-3">
   <!-- next time add here aquarium['image'], not the direct link into the image -->
-  <img src="https://cdn.britannica.com/29/121829-050-911F77EC/freshwater-aquarium.jpg" class="card-img-top" alt="...">
+  <img :src="aquarium['image']" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">{{aquarium['name']}}</h5>
     <a href="#" class="btn btn-primary" @click="pickAquarium(aquarium['name'])">check aquarium!</a>

@@ -27,7 +27,6 @@ watch(()=> pickedFishStore.name, (name)=>{ refresh_fish(name); });
 function refresh_fish(name) {
   fish.value = aquariumStore.aquarium_object.fish.find(it => it.name === name);
   // I don't have any idea why find in example under not working
-  console.log(fish.value);
   for (const s of species.value) {
     if (fish.value.species === s.name)
       specie.value = s;
@@ -49,17 +48,16 @@ onBeforeMount(()=>{
 
 function eat_fish()
 {
-  console.log(aquariumStore.aquarium_name);
-  console.log(pickedFishStore.name);
-  const res = instance.delete('/delete-fish', {
+  const res = instance.delete('/delete-fish', {data: {
     'aquarium_name': aquariumStore.aquarium_name,
     'name': pickedFishStore.name
-  }).then((res)=>{
+  }}).then((res)=>{
     alertsStore.set_success('successfully eaten the fish!');
+    router.push('/aquaMonitor');
   }).catch((e)=> {
     alertsStore.set_danger('cannot eat fish, please try again later :(');
+    router.push('/aquaMonitor');
   });
-  router.push('/aquaMonitor');
 }
 
 </script>
