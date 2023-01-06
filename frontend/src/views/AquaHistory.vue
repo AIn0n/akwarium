@@ -13,6 +13,7 @@ const alertStore = useAlertsStore();
 const aquariumStore = useAquariumStore();
 const router = useRouter();
 const chart = ref(null);
+const show_logs = ref(true);
 
 const logs = ref({});
 let traces = {};
@@ -37,11 +38,15 @@ onBeforeMount(()=>{
   instance.get('/log-all/' + aquariumStore.aquarium_name)
   .then((res) => { 
     logs.value = res.data.message;
-    for (const log of logs.value.slice(1)) {
-      for (const param of params) {
-        traces[param].y.push(parseFloat(log[param]));
-        traces[param].x.push(new Date(log.date));
+    if (logs.value.length > 2) {
+      for (const log of logs.value.slice(1)) {
+        for (const param of params) {
+          traces[param].y.push(parseFloat(log[param]));
+          traces[param].x.push(new Date(log.date));
+        }
       }
+    } else {
+      show_logs.value = false;
     }
   }).catch((e) => {
     alertStore.set_danger('cannot get logs, try later');
@@ -68,6 +73,7 @@ function generate_chart() {
 
 <template lang="pug">
 Navbar
-button(type="button" class="position-absolute start-50 top-50 translate-middle btn btn-primary" @click="generate_chart") click here to generate chart
+button(type="button" class="position-absolute start-50 top-50 translate-middle btn btn-primary" @click="generate_chart" v-if="show_logs") click here to generate chart
+h3(v-else class="position-absolute start-50 top-50 translate-middle") cannot show any chart, please add more logs!
 div(ref='chart')
 </template>

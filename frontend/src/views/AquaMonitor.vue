@@ -39,7 +39,6 @@ async function get_devices()
     devices.value['heater'] = res.data['heater'].filter(x => x._id === aquariumStore.aquarium_object.heater_id)[0];
     devices.value['light'] = res.data['light'].filter(x => x._id === aquariumStore.aquarium_object.lamp_id)[0];
     devices.value['pump'] = res.data['pump'].filter(x => x._id === aquariumStore.aquarium_object.pump_id)[0];
-    console.log(devices.value)
   }).catch((e)=>{
     alertStore.set_danger("cannot get devices list");
     router.push('/Aquariums');

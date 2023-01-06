@@ -15,7 +15,6 @@ const is_admin = ref(false);
 
 instance.get('/if-admin').then((res)=> {
   is_admin.value = res.data.message;
-  console.log(is_admin.value);
 }).catch((res)=>{ is_admin.value = false; })
 
 
