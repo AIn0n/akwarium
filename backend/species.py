@@ -115,15 +115,16 @@ def get_species_by_name(name=None):
     if not species:
         return "No such species"
     # Stringifying the _id to make the object serialisable
-    species["_id"] = str(
-        species["_id"]
-    )  
+    species["_id"] = str(species["_id"])
     return jsonify(species)
 
 
 @app.route("/incompatibilities/<name>", methods=["GET"])
 def get_species_incompatibilities(name=None):
-    return species_db.find_one({"name": name})["incompatibilities"] or "No such species"
+    return (
+        species_db.find_one({"name": name})["incompatibilities"]
+        or "No such species"
+    )
 
 
 @fl.login_required

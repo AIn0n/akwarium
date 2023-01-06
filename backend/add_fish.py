@@ -143,7 +143,7 @@ def delete_fish():
                     array_filters=[
                         {"a.name": aquarium_name},
                         {"b.name": fish["name"]},
-                    ]
+                    ],
                 )
 
     users_db.update_one(
