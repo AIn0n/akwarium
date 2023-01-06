@@ -25,7 +25,9 @@ onBeforeMount(()=>{
     })
 });
 
-function pickSpecie(new_specie) { specie.value = new_specie; }
+function pickSpecie(new_specie) { 
+  specie.value = new_specie;
+}
 
 function add_fish()
 {
@@ -43,11 +45,13 @@ function add_fish()
 
 <template>
   <Navbar />
-  <div class="row">    
+  <div class="row">
+    <!-- here is list column -->    
     <div class="list-group list-group-flush col-3">
       <a href="#" class="list-group-item list-group-item-action"
       v-for="s in species" @click="pickSpecie(s)">{{s['name']}}</a>
     </div>
+    <!-- here finish list column -->
     <div v-if="specie !== undefined" class="col container text-center mx-3">
       <h3 class="display-6 my-3">{{specie['name']}}</h3>
       <div class="row">
@@ -57,6 +61,7 @@ function add_fish()
         </table>
       </div>
       <div class="container text-center row my-3">
+        <p class="mb-3"> incompatible species: {{ specie.incompatibilities.join(', ') }} </p>
         <input type="number" class="form-control col mx-3" placeholder="Age" v-model="age">
         <input type="text" class="form-control col mx-3" placeholder="Name" v-model="name">
         <button type="button" class="btn btn-outline-dark col mx-3" @click="add_fish">
