@@ -71,10 +71,10 @@ div(class="row")
     p fish's age: {{ fish.birth_date }}
     p specie: {{  fish.species }}
     h5 problems
-    ul(class="list-group")
+    ul(class="list-group me-3")
       li(class="list-group-item list-group-item-danger" v-for="problem in fish.issues")
-        div {{ problem }}
-    div(class="row")
+        div {{ problem.message }}
+    div(class="row me-1")
       button(class="btn btn-danger text-center my-3 mx-3 col" @click="eat_fish") eat fish!
       button(class="btn btn-secondary text-center my-3 mx-3 col" @click="router.push('/aquaMonitor')") back to monitor
 </template>
