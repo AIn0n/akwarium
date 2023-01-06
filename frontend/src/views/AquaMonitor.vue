@@ -42,6 +42,19 @@ function download() {
   downloadLink.value.href = url;
   URL.revokeObjectURL(url);
 }
+
+function import_file(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    instance.post('/import-aquarium', {json_string: e.target.result}).then((res)=>{
+      alertStore.set_success("successfully imported aquarium");
+    }).catch((e)=>{
+      alertStore.set_danger("cannot import aquarium: " + e.response.data);
+    });
+  }
+  reader.readAsText(file)
+}
 </script>
 
 <template>
@@ -61,6 +74,10 @@ function download() {
         <button type="button" class="btn btn-outline-dark col mx-3">Save logs</button>
         <button type="button" class="btn btn-outline-dark col mx-3" @click="router.push('/WaterParamSetter')">Update Water parameters</button>
         <a ref="downloadLink" class="btn btn-outline-dark col mx-3" download="myfile.txt" @click="download">export to txt file</a>
+      <div class="my-3">
+        <label for="formFile" class="form-label">import aquarium</label>
+        <input type="file" ref="fileInput" class="form-control" id="formFile" @change="import_file"/>
+      </div>
       </div>
     </div>
   </div>
