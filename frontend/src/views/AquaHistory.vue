@@ -7,7 +7,7 @@ import { useAlertsStore } from '../stores/alerts';
 import { useAquariumStore } from '../stores/aquarium';
 import instance from '../configs/axios_instance';
 import { useRouter } from 'vue-router';
-import { ref, onMounted, onBeforeMount } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 
 const alertStore = useAlertsStore();
 const aquariumStore = useAquariumStore();
@@ -17,18 +17,6 @@ const chart = ref(null);
 const logs = ref({});
 let traces = {};
 const params = ['GH', 'KH', 'NO2', 'NO3', 'PH'];
-const layout = {
-  title: 'water parameters over time',
-  xaxis: {
-    type: 'date',
-    tickformat: '%Y-%m-%d',
-    autorange: true
-  },
-  yaxis: {
-    autorange: true,
-    type: 'linear'
-  }
-}
 
 // init each trace with proper obj
 for (const param of params) {
@@ -61,18 +49,25 @@ onBeforeMount(()=>{
   })
 })
 
-onMounted(()=>{
-})
-
 function generate_chart() {
   const data = Object.values(traces)
-  console.log(data)
-  Plotly.newPlot(chart.value, data, layout);
+  Plotly.newPlot(chart.value, data, {
+    title: 'water parameters over time',
+    xaxis: {
+      type: 'date',
+      tickformat: '%Y-%m-%d',
+      autorange: true
+    },
+    yaxis: {
+      autorange: true,
+      type: 'linear'
+    }
+  });
 }
 </script>
 
 <template lang="pug">
 Navbar
-button(class="button" @click="generate_chart") click here to generate chart
+button(type="button" class="position-absolute start-50 top-50 translate-middle btn btn-primary" @click="generate_chart") click here to generate chart
 div(ref='chart')
 </template>
