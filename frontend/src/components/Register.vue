@@ -14,7 +14,10 @@ function register(event) {
         name: username.value,
         password: password.value,
         email: email.value
-    }).then( res => { console.log(res)}).catch(e => { 
+    }).then( res => { 
+        error_message.value = "successfully registered";
+        show_error.value = true;
+    }).catch(e => { 
         //TODO: make this error handling message better
         error_message.value = '' + e;
         show_error.value = true;
