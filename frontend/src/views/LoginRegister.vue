@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <div class="d-flex">
+  <div class="container my-3 w-75">
     <div class="row text-center">
       <div class="col align-self-center">
         <Login/>
