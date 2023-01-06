@@ -13,7 +13,15 @@ function login(event) {
     let result = instance.post("/login", {
         name: username.value,
         password: password.value
-    }).then( res => {router.push("/Aquariums")}).catch(e => { 
+    }).then( (res) => {
+        if (res.data.code == 418) {
+            error_message.value = res.data.message;
+            show_error.value = true;
+        } else {
+            router.push("/Aquariums");
+        }
+    }).catch((e) => { 
+        console.log(e);
         //TODO: make this error handling message better
         error_message.value = '' + e;
         show_error.value = true;
