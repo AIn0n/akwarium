@@ -30,14 +30,14 @@ def add_fish():
 
     # Species name validation
     species_names = [x["name"] for x in species_db.find({})]
-    if species_names.count(species) != 1:
+    if species not in species_names:
         return "Invalid species name", 419
 
     this_user = users_db.find_one({"_id": ObjectId(str(id))})
 
     # Aquarium name validation
     this_aquarium = find_aquarium(aquarium_name, this_user)
-    if not (this_aquarium):
+    if not this_aquarium:
         return "Invalid aquarium name", 420
 
     # Fish name validation
@@ -105,7 +105,7 @@ def delete_fish():
     try:
         id = fl.current_user.id
     except AttributeError:
-        return ("Attribute error. User probably not logged in.", 424)
+        return "Attribute error. User probably not logged in.", 424
 
     name = request.form["name"]
     aquarium_name = request.form["aquarium_name"]
@@ -114,7 +114,7 @@ def delete_fish():
 
     # Aquarium name validation
     this_aquarium = find_aquarium(aquarium_name, this_user)
-    if not (this_aquarium):
+    if not this_aquarium:
         return "Invalid aquarium name", 420
 
     # Fish name validation
@@ -141,7 +141,7 @@ def delete_fish():
                     array_filters=[
                         {"a.name": aquarium_name},
                         {"b.name": fish["name"]},
-                    ],
+                    ]
                 )
 
     users_db.update_one(

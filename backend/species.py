@@ -75,9 +75,9 @@ def add_incompatibilities():
 
     # Query validation
     species_names = get_species_names()
-    if species_names.count(subject_name) != 1:
+    if subject_name not in species_names != 1:
         return "Invalid aggression subject name", 419
-    if species_names.count(aggressor_name) != 1:
+    if aggressor_name not in species_names != 1:
         return "Invalid aggressor name", 419
 
     # Mutual incompatibility insertion
@@ -109,20 +109,21 @@ def get_species():
 
 
 # Returns a single species by name
-@app.route("/species-by-name", methods=["GET"])
-def get_species_by_name():
-    name = request.form["name"]
+@app.route("/species/<name>", methods=["GET"])
+def get_species_by_name(name=None):
     species = species_db.find_one({"name": name})
+    if not species:
+        return "No such species"
+    # Stringifying the _id to make the object serialisable
     species["_id"] = str(
         species["_id"]
-    )  # Stringifying the _id to make the object serialisable
+    )  
     return jsonify(species)
 
 
-@app.route("/incompatibilities", methods=["GET"])
-def get_species_incompatibilities():
-    name = request.form["name"]
-    return species_db.find_one({"name": name})["incompatibilities"]
+@app.route("/incompatibilities/<name>", methods=["GET"])
+def get_species_incompatibilities(name=None):
+    return species_db.find_one({"name": name})["incompatibilities"] or "No such species"
 
 
 @fl.login_required
