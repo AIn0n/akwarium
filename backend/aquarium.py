@@ -62,8 +62,8 @@ def add_aquarium():
         "lamp_id": lamp_id,
         "pump_id": pump_id,
         "filter_id": filter_id,
-        "water_min": [{"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}],
-        "water_max": [{"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}],
+        "water_min": {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""},
+        "water_max": {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""},
         "fish": [],
     }
     users_db.find_one_and_update(
@@ -98,7 +98,7 @@ def import_aquarium():
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": aquarium_obj}}
     )
 
-    x = users_db.find_one({"_id": ObjectId(str(id))})["logs_id"]
+    x = user["logs_id"]
     logs_db.find_one_and_update(
         {"_id": x},
         {"$push": {aquarium_obj["name"]: {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}}},
@@ -125,8 +125,6 @@ def aquarium_specific(name=None):
 
     for aq in x["aquarium"]:
         if aq["name"] == name:
-            aq["water_min"] = aq["water_min"][0]
-            aq["water_max"] = aq["water_max"][0]
             return aq
     return jsonify({"message": "Incorrect name", "code": 418})
 
