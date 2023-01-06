@@ -46,7 +46,7 @@ def log_add():
         "date": datetime.now(),
         "KH": kh,
         "GH": gh,
-        "PH": ph,
+        "pH": ph,
         "NO2": no2,
         "NO3": no3,
     }
