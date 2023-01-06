@@ -97,6 +97,12 @@ def import_aquarium():
     users_db.find_one_and_update(
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": aquarium_obj}}
     )
+
+    x = users_db.find_one({"_id": ObjectId(str(id))})["logs_id"]
+    logs_db.find_one_and_update(
+        {"_id": x},
+        {"$push": {aquarium_obj["name"]: {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}}},
+    )
     return "Success", 200
 
 
