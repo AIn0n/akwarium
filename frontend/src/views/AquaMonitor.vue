@@ -81,7 +81,7 @@ function import_file(event) {
 
 <template>
   <Navbar />
-  <div class="row">
+  <div class="container row text-center">
     <FishList :fish_list="aquariumStore.aquarium_object.fish" />
     <div class="col container text-center mx-3">
       <h3 class="display-6 my-3">{{ aquariumStore.aquarium_name }}</h3>
