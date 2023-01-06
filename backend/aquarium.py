@@ -70,7 +70,10 @@ def add_aquarium():
         {"_id": ObjectId(str(id))}, {"$push": {"aquarium": obj}}
     )
     x = users_db.find_one({"_id": ObjectId(str(id))})["logs_id"]
-    logs_db.find_one_and_update({"_id": x}, {"$push": {name: {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}}})
+    logs_db.find_one_and_update(
+        {"_id": x},
+        {"$push": {name: {"KH": "", "GH": "", "pH": "", "NO2": "", "NO3": ""}}},
+    )
     return "Success", 200
 
 
@@ -86,8 +89,8 @@ def import_aquarium():
     aquarium_obj = json.loads(json_string)
 
     # Check for duplicate name
-    names = [aq['name'] for aq in user["aquarium"]]
-    if(aquarium_obj['name'] in names):
+    names = [aq["name"] for aq in user["aquarium"]]
+    if aquarium_obj["name"] in names:
         return "Duplicate name", 419
 
     # Insert the new aquarium into the database
@@ -116,8 +119,8 @@ def aquarium_specific(name=None):
 
     for aq in x["aquarium"]:
         if aq["name"] == name:
-            aq['water_min'] = aq['water_min'][0]
-            aq['water_max'] = aq['water_max'][0]
+            aq["water_min"] = aq["water_min"][0]
+            aq["water_max"] = aq["water_max"][0]
             return aq
     return jsonify({"message": "Incorrect name", "code": 418})
 

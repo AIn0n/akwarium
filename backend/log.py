@@ -71,10 +71,14 @@ def water_update(id, aquarium):
         species = species_db.find_one({"name": fish["species"]})
         for el in ["KH", "GH", "pH", "NO2", "NO3"]:
             if species["water_requirements"]["min"][el] != "":
-                if min[el] == "" or float(min[el]) < float(species["water_requirements"]["min"][el]):
+                if min[el] == "" or float(min[el]) < float(
+                    species["water_requirements"]["min"][el]
+                ):
                     min[el] = float(species["water_requirements"]["min"][el])
             if species["water_requirements"]["max"][el] != "":
-                if max[el] == "" or float(max[el]) > float(species["water_requirements"]["max"][el]):
+                if max[el] == "" or float(max[el]) > float(
+                    species["water_requirements"]["max"][el]
+                ):
                     max[el] = float(species["water_requirements"]["max"][el])
 
     users_db.find_one_and_update(

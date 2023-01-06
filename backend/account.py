@@ -55,6 +55,6 @@ def change_username():
 def admin():
     id = fl.current_user.id
     x = users_db.find_one({"_id": ObjectId(str(id))})
-    val = x['admin']
+    val = x["admin"]
 
     return jsonify({"message": val, "code": 200})
