@@ -10,7 +10,7 @@ import { useAlertsStore } from '../stores/alerts';
 import { usePickedFishStore } from '../stores/pickedFish';
 // vue elements and already configured elements
 import { useRouter } from 'vue-router';
-import { onBeforeMount, ref, onMounted } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import instance from '../configs/axios_instance';
 
 const aquariumStore = useAquariumStore();
@@ -36,15 +36,10 @@ onBeforeMount(()=>{
   pickedFishStore.name = "";
 });
 
-onMounted(()=>{
-  download();
-})
-
 function download() {
-  const blob = new Blob([console.log(JSON.stringify(aquariumStore.aquarium_object))], {type: 'text/plain'});
+  const blob = new Blob([JSON.stringify(aquariumStore.aquarium_object)], {type: 'text/plain'});
   const url = URL.createObjectURL(blob);
   downloadLink.value.href = url;
-  downloadLink.value.click();
   URL.revokeObjectURL(url);
 }
 </script>
@@ -65,7 +60,7 @@ function download() {
       <div class="container text-center row">
         <button type="button" class="btn btn-outline-dark col mx-3">Save logs</button>
         <button type="button" class="btn btn-outline-dark col mx-3" @click="router.push('/WaterParamSetter')">Update Water parameters</button>
-        <a ref="downloadLink" class="btn btn-outline-dark col mx-3" download="myfile.txt">Import to txt file</a>
+        <a ref="downloadLink" class="btn btn-outline-dark col mx-3" download="myfile.txt" @click="download">export to txt file</a>
       </div>
     </div>
   </div>
