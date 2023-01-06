@@ -62,13 +62,17 @@ onBeforeMount(()=>{
 })
 
 onMounted(()=>{
+})
+
+function generate_chart() {
   const data = Object.values(traces)
   console.log(data)
   Plotly.newPlot(chart.value, data, layout);
-})
+}
 </script>
 
 <template lang="pug">
 Navbar
+button(class="button" @click="generate_chart") click here to generate chart
 div(ref='chart')
 </template>
